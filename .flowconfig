@@ -1,0 +1,16 @@
+[ignore]
+
+[include]
+src/
+
+[libs]
+types/types.js
+
+[options]
+esproposal.export_star_as=enable
+esproposal.decorators=ignore
+module.system.node.resolve_dirname=node_modules
+module.system.node.resolve_dirname=./src
+
+[lints]
+all=warn
