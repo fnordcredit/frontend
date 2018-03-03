@@ -16,6 +16,9 @@ export default class AsidePanel extends React.Component<Props> {
   }
 
   renderTransaction(transaction: Transaction) {
+    const description = transaction.description == ""
+          ? ""
+          : ` (${transaction.description})`;
     return (
       <ListItem key={transaction.id}>
         <ListItemText
@@ -25,7 +28,7 @@ export default class AsidePanel extends React.Component<Props> {
               color: "colorful",
               inline: true
             }),
-            ` (${transaction.description})`
+            description
           ]}
           secondary={
             DateTime.fromMillis(transaction.time)
