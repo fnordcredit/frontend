@@ -12,6 +12,7 @@ import API from "API";
 import Cur from "formatCurrency";
 import AsidePanel from "./AsidePanel";
 import ChangeCreditPanel from "./ChangeCreditPanel";
+import BarcodeScanner from "components/BarcodeScanner";
 
 type Props = {
   user: User,
@@ -76,9 +77,20 @@ export default class UserDetails extends View<Props, State> {
     this.setState({ successMsg: "" });
   }
 
+  scannerSuccess = (msg: string) => {
+    console.log(msg);
+    const product =
+      this.props.products.find(prod => prod.ean.split("|").includes(msg));
+    console.log(product);
+    if (product !== undefined) {
+      this.buyProduct(product)();
+    }
+  }
+
   renderView() {
     return (
       <div style={{ padding: 15 }}>
+        <BarcodeScanner onSuccess={this.scannerSuccess} />
         <Grid container style={{ marginTop: 25 }} justify="center">
           <Grid item xs={12} md={3}>
             <AsidePanel user={this.state.user}
@@ -87,10 +99,10 @@ export default class UserDetails extends View<Props, State> {
           <Grid item xs={12} md={9}>
             <ChangeCreditPanel products={[0.5, 1, 2, 5, 10]}
               category="Add Credit" addCredit={this.addCredit} />
-            <ChangeCreditPanel products={[-0.5, -1, -1.5, -2, -5]}
-              category="Remove Credit" addCredit={this.addCredit} />
             <ChangeCreditPanel products={this.props.products}
               category="Products" addCredit={this.buyProduct} />
+            <ChangeCreditPanel products={[-0.5, -1, -1.5, -2, -5]}
+              category="Remove Credit" addCredit={this.addCredit} />
           </Grid>
         </Grid>
         <Snackbar
