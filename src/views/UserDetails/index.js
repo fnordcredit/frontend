@@ -13,6 +13,8 @@ import Cur from "formatCurrency";
 import AsidePanel from "./AsidePanel";
 import ChangeCreditPanel from "./ChangeCreditPanel";
 import BarcodeScanner from "components/BarcodeScanner";
+import ErrorDialog from "components/ErrorDialog";
+import axios from "axios";
 
 type Props = {
   user: User,
@@ -23,7 +25,8 @@ type Props = {
 type State = {
   successMsg: string,
   user: User,
-  lastTransactions: Array<Transaction> | "disabled"
+  lastTransactions: Array<Transaction> | "disabled",
+  dialogError?: axios.AxiosError<any>
 };
 
 export default class UserDetails extends View<Props, State> {
@@ -32,7 +35,8 @@ export default class UserDetails extends View<Props, State> {
     this.state = {
       successMsg: "",
       user: props.user,
-      lastTransactions: []
+      lastTransactions: [],
+      dialogError: null
     };
     this.updateTransactions();
   }
@@ -48,7 +52,8 @@ export default class UserDetails extends View<Props, State> {
           user: response.data
         });
         this.updateTransactions();
-      });
+      })
+      .catch(error => this.showError(error));
   }
 
   buyProduct = (product: Product) => () => {
@@ -59,7 +64,8 @@ export default class UserDetails extends View<Props, State> {
           user: response.data
         });
         this.updateTransactions();
-      });
+      })
+      .catch(error => this.showError(error));
   }
 
   updateTransactions = () => {
@@ -85,6 +91,14 @@ export default class UserDetails extends View<Props, State> {
     if (product !== undefined) {
       this.buyProduct(product)();
     }
+  }
+
+  showError = (error: axios.AxiosError<any>) => {
+    this.setState({ dialogError: error });
+  }
+
+  closeErrorMsg = () => {
+    this.setState({ dialogError: null });
   }
 
   renderView() {
@@ -113,6 +127,9 @@ export default class UserDetails extends View<Props, State> {
           }}
           message={<span id="message-id">{this.state.successMsg}</span>}
         />
+        <ErrorDialog onClose={this.closeErrorMsg}
+          error={this.state.dialogError}
+          open={this.state.dialogError != null} />
       </div>
     );
   }
