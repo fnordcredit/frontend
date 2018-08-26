@@ -2,19 +2,19 @@
 import React from "react";
 import View from "views/base";
 
-import Toolbar from "material-ui/Toolbar";
-import Icon from "material-ui/Icon";
-import Button from "material-ui/Button";
-import Typography from "material-ui/Typography";
-import Grid from 'material-ui/Grid';
-import Snackbar from "material-ui/Snackbar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Icon from "@material-ui/core/Icon";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import Grid from '@material-ui/core/Grid';
+import Snackbar from "@material-ui/core/Snackbar";
 import API from "API";
 import Cur from "formatCurrency";
 import AsidePanel from "./AsidePanel";
 import ChangeCreditPanel from "./ChangeCreditPanel";
 import BarcodeScanner from "components/BarcodeScanner";
 import ErrorDialog from "components/ErrorDialog";
-import axios from "axios";
+import type { $AxiosError } from "axios";
 
 type Props = {
   user: User,
@@ -26,7 +26,7 @@ type State = {
   successMsg: string,
   user: User,
   lastTransactions: Array<Transaction> | "disabled",
-  dialogError?: axios.AxiosError<any>
+  dialogError?: ?$AxiosError<any>
 };
 
 export default class UserDetails extends View<Props, State> {
@@ -93,7 +93,7 @@ export default class UserDetails extends View<Props, State> {
     }
   }
 
-  showError = (error: axios.AxiosError<any>) => {
+  showError = (error: $AxiosError<any>) => {
     this.setState({ dialogError: error });
   }
 

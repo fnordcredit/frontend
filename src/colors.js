@@ -1,6 +1,6 @@
 // @flow
-import * as MuiColors from "material-ui/colors";
-import createMuiTheme from "material-ui/styles/createMuiTheme";
+import * as MuiColors from "@material-ui/core/colors";
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 export const background = "#4e5d6c";
 export const lightBackground = "#637f7a";

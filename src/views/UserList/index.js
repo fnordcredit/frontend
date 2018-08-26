@@ -1,9 +1,9 @@
 // @flow
 import React from "react";
-import Toolbar from "material-ui/Toolbar";
-import Button from "material-ui/Button";
-import Icon from "material-ui/Icon";
-import TextField from "material-ui/TextField";
+import Toolbar from "@material-ui/core/Toolbar";
+import Button from "@material-ui/core/Button";
+import Icon from "@material-ui/core/Icon";
+import TextField from "@material-ui/core/TextField";
 
 import View from "views/base";
 import AddUser from "./AddUser";

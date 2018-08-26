@@ -1,18 +1,18 @@
 // @flow
 import React from "react";
-import Button from "material-ui/Button";
+import Button from "@material-ui/core/Button";
 import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from "material-ui/Dialog";
-import axios from "axios";
+} from "@material-ui/core/Dialog";
+import type { $AxiosError } from "axios";
 
 export type Props = {
   open: boolean,
   onClose: () => void,
-  error?: axios.AxiosError<any>
+  error?: ?$AxiosError<any>
 };
 
 export default class ErrorDialog extends React.Component<Props> {
@@ -36,8 +36,9 @@ export default class ErrorDialog extends React.Component<Props> {
           <DialogContentText id="alert-dialog-description">
             {
               this.props.error != null ?
-                this.props.error.response.data
-                  || this.props.error.response.statusText
+                (this.props.error.response != null
+                  && (this.props.error.response.data
+                  || this.props.error.response.statusText))
                   || this.props.error.code
                   || "Unknown Error"
                   : "Unknown Error"

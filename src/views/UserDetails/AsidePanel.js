@@ -1,9 +1,12 @@
 // @flow
 import React from "react";
-import List, { ListItem, ListSubheader, ListItemText } from "material-ui/List";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import ListItemText from "@material-ui/core/ListItemText";
 import Cur from "formatCurrency";
 import { DateTime } from "luxon";
-import Paper from "material-ui/Paper";
+import Paper from "@material-ui/core/Paper";
 
 type Props = {
   user: User,

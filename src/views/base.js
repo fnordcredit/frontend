@@ -1,8 +1,8 @@
 // @flow
 import * as React from "react";
-import AppBar from "material-ui/AppBar";
-import Toolbar from "material-ui/Toolbar";
-import Typography from "material-ui/Typography";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 
 export default class View<P, S> extends React.Component<P, S> {
   constructor(props: P) {

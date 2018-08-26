@@ -1,9 +1,15 @@
 {
   "presets": [
-    "env", "react"
+    ["@babel/preset-env", {
+      modules: false
+    }],
+    "@babel/preset-react",
+    "@babel/preset-flow"
   ],
   "plugins": [
-    "transform-class-properties",
-    "transform-decorators-legacy",
-  ]
+    "@babel/plugin-proposal-class-properties",
+    ["@babel/plugin-proposal-decorators", {
+      legacy: true
+    }]
+  ],
 }

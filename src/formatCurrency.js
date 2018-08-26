@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import Typography from "material-ui/Typography";
+import Typography from "@material-ui/core/Typography";
 
 const formatString = (amount: number, fmt: "diff" | "normal" = "normal") => {
   const prefix = fmt === "diff" && amount > 0 ? "+" : "";
@@ -10,7 +10,8 @@ const formatString = (amount: number, fmt: "diff" | "normal" = "normal") => {
 type FormatOptions = {
   fmt?: "diff" | "normal",
   color?: "colorful" | "negOnly" | "none",
-  inline?: boolean
+  inline?: boolean,
+  extraProps?: Object
 };
 
 const format = (amount: number, options: FormatOptions) => {

@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import axios from "axios";
 import UserDetails from "views/UserDetails";
 import UserList from "views/UserList";
@@ -18,7 +18,7 @@ type State = {
 
 const theme = fnordCreditTheme;
 
-export default class App extends React.Component<Props, State> {
+export class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -77,7 +77,7 @@ export default class App extends React.Component<Props, State> {
     this.setState({view: "userList"});
   }
 
-  renderCurrentView = () => {
+  render = () => {
     if (this.state.view == "userList") {
       return (<UserList
                 users={this.state.users}
@@ -92,13 +92,12 @@ export default class App extends React.Component<Props, State> {
     return null;
   }
 
-  render = () => {
-    return (
-      <MuiThemeProvider theme={theme}>
-        <div>
-          { this.renderCurrentView() }
-        </div>
-      </MuiThemeProvider>
-    );
-  }
+};
+
+export default function StyledApp(props: Props) {
+  return (
+    <MuiThemeProvider theme={theme}>
+      <App {...props} />
+    </MuiThemeProvider>
+  );
 };
