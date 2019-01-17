@@ -1,9 +1,10 @@
 // @flow
 import axios from "axios";
+import type { AxiosPromise } from "axios";
 import Cur from "formatCurrency";
 
 export default {
-  addCredit: (user: User, delta: number) => (
+  addCredit: <T> (user: User, delta: number): AxiosPromise<T> => (
     axios.post("/user/credit",
       { id: user.id
       , delta: delta
@@ -11,7 +12,7 @@ export default {
       , description: Cur.formatString(delta, "diff")
       })
   ),
-  buyProduct: (user: User, product: Product) => (
+  buyProduct: <T> (user: User, product: Product): AxiosPromise<T> => (
     axios.post("/user/credit",
       { id: user.id
       , delta: -product.price
@@ -19,17 +20,17 @@ export default {
       , description: product.name
       })
   ),
-  addUser: (user: string) => (
+  addUser: <T> (user: string): AxiosPromise<T> => (
     axios.post("/user/add",
       { username: user })
   ),
-  getAllUsers: () => axios.get("/users/all"),
-  getAllProducts: () => axios.get("/products/all"),
-  getUser: (user: User, pin?: string) => (
+  getAllUsers: <T> (): AxiosPromise<T> => axios.get("/users/all"),
+  getAllProducts: <T> (): AxiosPromise<T> => axios.get("/products/all"),
+  getUser: <T> (user: User, pin?: string): AxiosPromise<T> => (
     axios.get(`/user/${user.id}`,
       { headers: { "x-user-pincode": pin == undefined ? "null" : pin }})
   ),
-  getTransactions: (user: User) => (
+  getTransactions: <T> (user: User): AxiosPromise<T> => (
     axios.get(`/transactions/${user.id}`)
   )
 };
