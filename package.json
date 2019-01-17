@@ -5,7 +5,8 @@
   "description": "A new frontend for fnordcredit written in React",
   "scripts": {
     "watch": "webpack --watch --progress",
-    "build": "webpack --bail"
+    "build": "webpack --bail",
+    "travis": "yarn build"
   },
   "dependencies": {
     "axios": "^0.18.0",
