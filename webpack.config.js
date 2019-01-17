@@ -22,7 +22,7 @@ module.exports = {
     publicPath: 'dist/'
   },
   module: {
-    loaders: [
+    rules: [
       { test: /\.(woff2?|eot|ttf|svg)$/, loader: "file-loader" },
       { test: /\.css$/, loader: "style-loader!css-loader" },
       { test: /\.js(x)?$/, exclude: /node_modules/, loader: "babel-loader" }

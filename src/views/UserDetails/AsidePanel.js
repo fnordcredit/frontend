@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import * as React from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListSubheader from "@material-ui/core/ListSubheader";
@@ -18,7 +18,7 @@ export default class AsidePanel extends React.Component<Props> {
     super(props);
   }
 
-  renderTransaction(transaction: Transaction) {
+  renderTransaction = (transaction: Transaction): React.Node => {
     const description = transaction.description == ""
           ? ""
           : ` (${transaction.description})`;
@@ -42,7 +42,7 @@ export default class AsidePanel extends React.Component<Props> {
     );
   }
 
-  renderTransactions = () => {
+  renderTransactions = (): React.Node => {
     if (this.props.transactions === "disabled") {
       return (
         <ListItem>
@@ -56,7 +56,10 @@ export default class AsidePanel extends React.Component<Props> {
           <ListItemText primary={"No recent transactions."} />
         </ListItem>);
     }
-    return this.props.transactions.map(this.renderTransaction);
+    return (
+      <React.Fragment
+        children={this.props.transactions.map(this.renderTransaction)} />
+    );
   }
 
   render() {
