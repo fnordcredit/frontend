@@ -1,10 +1,8 @@
 // @flow
 import React from "react";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
-import axios from "axios";
 import UserDetails from "views/UserDetails";
 import UserList from "views/UserList";
-import type { Sorting } from "views/UserList";
 import fnordCreditTheme from "colors";
 import API from "API";
 
@@ -26,7 +24,7 @@ export class App extends React.Component<Props, State> {
       users: [],
       products: [],
       view: "userList",
-      selectedUser: null,
+      selectedUser: null
     };
 
     this.getAllProducts();
@@ -34,6 +32,8 @@ export class App extends React.Component<Props, State> {
   }
 
   catchError = (error: any) => {
+    // TODO: Catch error
+    // eslint-disable-next-line no-console
     console.log(error);
   }
 
@@ -46,13 +46,13 @@ export class App extends React.Component<Props, State> {
 
   getAllUsers = (callback?: (users: Array<User>) => void) => {
     API.getAllUsers()
-     .then((response) => {
-       this.setState({users: response.data});
-       if (callback != null) {
-        callback(response.data);
-       }
-     })
-     .catch(this.catchError);
+      .then((response) => {
+        this.setState({users: response.data});
+        if (callback != null) {
+          callback(response.data);
+        }
+      })
+      .catch(this.catchError);
   }
 
   addUser = (user: string) => {
@@ -60,7 +60,7 @@ export class App extends React.Component<Props, State> {
       .then((response) => {
         const users = response.data;
         this.setState({users: users});
-        const u = users.find(u => u.name == user ? u : undefined);
+        const u = users.find((us) => (us.name === user ? us : null));
         if (u != null) {
           this.setState({selectedUser: u, view: "userDetail"});
         }
@@ -78,21 +78,21 @@ export class App extends React.Component<Props, State> {
   }
 
   render = () => {
-    if (this.state.view == "userList") {
+    if (this.state.view === "userList") {
       return (<UserList
-                users={this.state.users}
-                addUser={this.addUser}
-                selectUser={this.selectUser} />);
+        users={this.state.users}
+        addUser={this.addUser}
+        selectUser={this.selectUser} />);
     }
-    if (this.state.view == "userDetail" && this.state.selectedUser != null) {
+    if (this.state.view === "userDetail" && this.state.selectedUser != null) {
       return (<UserDetails user={this.state.selectedUser}
-                backToList={this.backToList}
-                products={this.state.products} />);
+        backToList={this.backToList}
+        products={this.state.products} />);
     }
     return null;
   }
 
-};
+}
 
 export default function StyledApp(props: Props) {
   return (
@@ -100,4 +100,4 @@ export default function StyledApp(props: Props) {
       <App {...props} />
     </MuiThemeProvider>
   );
-};
+}

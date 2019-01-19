@@ -7,17 +7,17 @@ export default {
   addCredit: <T> (user: User, delta: number): AxiosPromise<T> => (
     axios.post("/user/credit",
       { id: user.id
-      , delta: delta
-      , product: null
-      , description: Cur.formatString(delta, "diff")
+        , delta: delta
+        , product: null
+        , description: Cur.formatString(delta, "diff")
       })
   ),
   buyProduct: <T> (user: User, product: Product): AxiosPromise<T> => (
     axios.post("/user/credit",
       { id: user.id
-      , delta: -product.price
-      , product: product
-      , description: product.name
+        , delta: -product.price
+        , product: product
+        , description: product.name
       })
   ),
   addUser: <T> (user: string): AxiosPromise<T> => (
@@ -28,7 +28,7 @@ export default {
   getAllProducts: <T> (): AxiosPromise<T> => axios.get("/products/all"),
   getUser: <T> (user: User, pin?: string): AxiosPromise<T> => (
     axios.get(`/user/${user.id}`,
-      { headers: { "x-user-pincode": pin == undefined ? "null" : pin }})
+      { headers: { "x-user-pincode": pin == null ? "null" : pin }})
   ),
   getTransactions: <T> (user: User): AxiosPromise<T> => (
     axios.get(`/transactions/${user.id}`)

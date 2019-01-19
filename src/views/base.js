@@ -25,7 +25,7 @@ export default class View<P, S> extends React.Component<P, S> {
 
   render() {
     return [
-      <AppBar position="static">
+      <AppBar position="static" key="toolbar">
         {this.renderToolbar()}
       </AppBar>,
       this.renderView()

@@ -18,16 +18,18 @@ export default class AsidePanel extends React.Component<Props> {
     super(props);
   }
 
+  getDescriptionString = (transaction: Transaction): string => (
+    transaction.description === "" ? "" : ` (${transaction.description})`
+  );
+
   renderTransaction = (transaction: Transaction): React.Node => {
-    const description = transaction.description == ""
-          ? ""
-          : ` (${transaction.description})`;
+    const description = this.getDescriptionString(transaction);
     return (
       <ListItem key={transaction.id}>
         <ListItemText
           primary={[
             Cur.format(transaction.delta, {
-              fmt:"diff",
+              fmt: "diff",
               color: "colorful",
               inline: true
             }),
@@ -57,14 +59,15 @@ export default class AsidePanel extends React.Component<Props> {
         </ListItem>);
     }
     return (
-      <React.Fragment
-        children={this.props.transactions.map(this.renderTransaction)} />
+      <React.Fragment>
+        {this.props.transactions.map(this.renderTransaction)}
+      </React.Fragment>
     );
   }
 
   render() {
     return [
-      <Paper style={{ marginBottom: 20 }}>
+      <Paper style={{ marginBottom: 20 }} key="credit">
         <List>
           <ListItem>
             <ListItemText
@@ -74,7 +77,7 @@ export default class AsidePanel extends React.Component<Props> {
           </ListItem>
         </List>
       </Paper>,
-      <Paper>
+      <Paper key="transactions">
         <List>
           <ListSubheader>Last Transactions</ListSubheader>
           { this.renderTransactions() }

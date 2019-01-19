@@ -21,14 +21,14 @@ export const fnordBlue = {
   [700]: "#404f5e",
   [800]: "#364451",
   [900]: "#303946",
-  contrastDefaultColor: 'light',
+  contrastDefaultColor: "light"
 };
 
 const fnordCreditTheme = createMuiTheme({
   palette: {
     primary: fnordBlue,
     secondary: MuiColors.lightBlue,
-    type: 'dark',
+    type: "dark",
     background: {
       paper: "#384B5D"
     }

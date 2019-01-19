@@ -5,7 +5,7 @@ import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
+  DialogTitle
 } from "@material-ui/core/Dialog";
 import type { $AxiosError } from "axios";
 
@@ -21,7 +21,6 @@ export default class ErrorDialog extends React.Component<Props> {
   }
 
   render() {
-    console.log(this.props.error);
     return (
       <Dialog
         open={this.props.open}
@@ -41,7 +40,7 @@ export default class ErrorDialog extends React.Component<Props> {
                   || this.props.error.response.statusText))
                   || this.props.error.code
                   || "Unknown Error"
-                  : "Unknown Error"
+                : "Unknown Error"
             }
           </DialogContentText>
         </DialogContent>

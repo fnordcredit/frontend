@@ -22,5 +22,5 @@ export default class SelectUser extends React.Component<Props> {
       </LargeButton>
     );
   }
-};
+}
 
