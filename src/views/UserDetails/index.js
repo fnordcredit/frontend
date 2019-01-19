@@ -73,7 +73,7 @@ export default class UserDetails extends View<Props, State> {
     API.getTransactions(this.state.user)
       .then((response) => this.setState({
         lastTransactions: response.data.sort(
-          (a, b) => a.time < b.time).slice(0, 5)
+          (a, b) => (a.time < b.time ? 1 : -1)).slice(0, 5)
       }))
       .catch((_response) => this.setState({
         lastTransactions: "disabled"
@@ -105,7 +105,7 @@ export default class UserDetails extends View<Props, State> {
       <div style={{ padding: 15 }}>
         <BarcodeScanner onSuccess={this.scannerSuccess} />
         <Grid container style={{ marginTop: 25 }} justify="center">
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={3} style={{ paddingRight: 10 }}>
             <AsidePanel user={this.state.user}
               transactions={this.state.lastTransactions} />
           </Grid>
