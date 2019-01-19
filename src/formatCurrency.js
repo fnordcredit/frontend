@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 const formatString = (amount: number, fmt: "diff" | "normal" = "normal") => {
   const prefix = fmt === "diff" && amount > 0 ? "+" : "";
   return `${prefix}${amount.toFixed(2)}€`.replace(".", ",");
-}
+};
 
 type FormatOptions = {
   fmt?: "diff" | "normal",
@@ -31,5 +31,5 @@ const format = (amount: number, options: FormatOptions) => {
 };
 
 export default {
-  formatString, format 
+  formatString, format
 };

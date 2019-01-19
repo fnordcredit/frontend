@@ -1,8 +1,6 @@
 // @flow
 import React from "react";
 import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
 import TextField from "@material-ui/core/TextField";
 
 import View from "views/base";
@@ -12,7 +10,7 @@ import SelectSorting from "./SelectSorting";
 import API from "API";
 
 import type { Sorting } from "./SelectSorting";
-export type { Sorting }from "./SelectSorting";
+export type { Sorting } from "./SelectSorting";
 
 type Props = {
   users: Array<User>,
@@ -36,26 +34,26 @@ export default class UserList extends View<Props, State> {
 
   sortUsers = (a: User, b: User) => {
     switch (this.state.sorted) {
-      case "last": return Math.sign(b.lastchanged - a.lastchanged);
-      case "zyx": return b.name.localeCompare(a.name);
-      default: return a.name.localeCompare(b.name);
+    case "last": return Math.sign(b.lastchanged - a.lastchanged);
+    case "zyx": return b.name.localeCompare(a.name);
+    default: return a.name.localeCompare(b.name);
     }
   }
-  
+
   selectUser = (user: User, pin?: string) => {
-    API.getUser(user, pin)  
+    API.getUser(user, pin)
       .then((response) => {
         this.props.selectUser(response.data);
       })
-      .catch(error => {
-        if (error.request.status == 401) {
+      .catch((error) => {
+        if (error.request.status === 401) {
           // Pin Required
         } else {
           // Error
         }
       });
   }
- 
+
   changeSorting = (sorting: Sorting) => {
     this.setState({ sorted: sorting });
   }
@@ -66,7 +64,7 @@ export default class UserList extends View<Props, State> {
   }
 
   filterUsers = (user: User) => (
-    user.name.toLowerCase().indexOf(this.state.search.toLowerCase()) >= 0	
+    user.name.toLowerCase().indexOf(this.state.search.toLowerCase()) >= 0
   )
 
   renderUser = (u: User) => (
@@ -77,7 +75,7 @@ export default class UserList extends View<Props, State> {
     return (
       <Toolbar>
         <SelectSorting sorting={this.state.sorted}
-            onChange={this.changeSorting} />
+          onChange={this.changeSorting} />
         <TextField label="search..." onChange={this.handleSearch} style={{
           marginLeft: 10,
           marginRight: 24,

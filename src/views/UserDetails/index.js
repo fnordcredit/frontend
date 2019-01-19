@@ -6,7 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Icon from "@material-ui/core/Icon";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Grid from '@material-ui/core/Grid';
+import Grid from "@material-ui/core/Grid";
 import Snackbar from "@material-ui/core/Snackbar";
 import API from "API";
 import Cur from "formatCurrency";
@@ -43,38 +43,39 @@ export default class UserDetails extends View<Props, State> {
 
   addCredit = (amount: number) => () => {
     const msg = amount < 0
-        ? `Successfully removed ${Cur.formatString(amount)} from your Account`
-        : `Successfully added ${Cur.formatString(amount)} to your Account`;
+      ? `Successfully removed ${Cur.formatString(amount)} from your Account`
+      : `Successfully added ${Cur.formatString(amount)} to your Account`;
     API.addCredit(this.state.user, amount)
-      .then(response => {
+      .then((response) => {
         this.setState({
           successMsg: msg,
           user: response.data
         });
         this.updateTransactions();
       })
-      .catch(error => this.showError(error));
+      .catch((error) => this.showError(error));
   }
 
   buyProduct = (product: Product) => () => {
     API.buyProduct(this.state.user, product)
-      .then(response => {
+      .then((response) => {
         this.setState({
-          successMsg: `Successfully bought ${product.name} for ${Cur.formatString(product.price)}`,
+          successMsg: `Successfully bought ${product.name}`
+            + `for ${Cur.formatString(product.price)}`,
           user: response.data
         });
         this.updateTransactions();
       })
-      .catch(error => this.showError(error));
+      .catch((error) => this.showError(error));
   }
 
   updateTransactions = () => {
     API.getTransactions(this.state.user)
-      .then(response => this.setState({
+      .then((response) => this.setState({
         lastTransactions: response.data.sort(
-          (a,b) => a.time < b.time).slice(0,5)
+          (a, b) => a.time < b.time).slice(0, 5)
       }))
-      .catch(response => this.setState({
+      .catch((_response) => this.setState({
         lastTransactions: "disabled"
       }));
   }
@@ -84,11 +85,9 @@ export default class UserDetails extends View<Props, State> {
   }
 
   scannerSuccess = (msg: string) => {
-    console.log(msg);
     const product =
-      this.props.products.find(prod => prod.ean.split("|").includes(msg));
-    console.log(product);
-    if (product !== undefined) {
+      this.props.products.find((prod) => prod.ean.split("|").includes(msg));
+    if (product != null) {
       this.buyProduct(product)();
     }
   }
@@ -120,10 +119,10 @@ export default class UserDetails extends View<Props, State> {
           </Grid>
         </Grid>
         <Snackbar
-          open={this.state.successMsg != ""}
+          open={this.state.successMsg !== ""}
           onClose={this.closeSnackbar}
           SnackbarContentProps={{
-            'aria-describedby': 'message-id',
+            "aria-describedby": "message-id"
           }}
           message={<span id="message-id">{this.state.successMsg}</span>}
         />
@@ -143,7 +142,8 @@ export default class UserDetails extends View<Props, State> {
         <Typography style={{ flex: 1 }} variant="title" align="center">
           User: {this.state.user.name}
         </Typography>
-        <Button variant="fab" color="secondary" style={{ top: 28, marginLeft: "2.5em" }}>
+        <Button variant="fab" color="secondary"
+          style={{ top: 28, marginLeft: "2.5em" }}>
           <Icon>settings</Icon>
         </Button>
       </Toolbar>
