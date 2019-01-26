@@ -2,7 +2,9 @@
 import React from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Icon from "@material-ui/core/Icon";
+import Restore from "@material-ui/icons/Restore";
+import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowDown";
 
 export type Sorting = "abc" | "zyx" | "last";
 
@@ -23,10 +25,10 @@ export default class SelectSorting extends React.Component<Props> {
   render() {
     return (
       <Tabs value={this.props.sorting} onChange={this.handleChange}
-        indicatorColor="secondary" textColor="secondary">
-        <Tab value="last" icon={<Icon>restore</Icon>} />
-        <Tab value="abc" icon={<Icon>vertical_align_bottom</Icon>} />
-        <Tab value="zyx" icon={<Icon>vertical_align_top</Icon>} />
+        indicatorColor="secondary" textColor="secondary" style={{ flex: 1 }}>
+        <Tab value="last" icon={<Restore />} label="most recent" />
+        <Tab value="abc" icon={<KeyboardArrowDown />} label="abc" />
+        <Tab value="zyx" icon={<KeyboardArrowUp />} label="zyx" />
       </Tabs>
     );
   }

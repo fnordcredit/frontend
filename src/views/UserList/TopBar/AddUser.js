@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
 import Button from "@material-ui/core/Button";
+import Fab from "@material-ui/core/Fab";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -68,10 +69,10 @@ export default class AddUser extends React.Component<Props, State> {
 
   render() {
     return [
-      <Button variant="fab" color="secondary" onClick={this.openDialog}
+      <Fab color="secondary" onClick={this.openDialog}
         style={{ top: 28 }} key="fab">
         <Icon>add</Icon>
-      </Button>,
+      </Fab>,
       this.renderDialog()
     ];
   }

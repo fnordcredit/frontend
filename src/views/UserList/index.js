@@ -1,16 +1,13 @@
 // @flow
 import React from "react";
-import Toolbar from "@material-ui/core/Toolbar";
-import TextField from "@material-ui/core/TextField";
 
 import View from "views/base";
-import AddUser from "./AddUser";
+import TopBar from "./TopBar";
 import SelectUser from "./SelectUser";
-import SelectSorting from "./SelectSorting";
 import API from "API";
 
-import type { Sorting } from "./SelectSorting";
-export type { Sorting } from "./SelectSorting";
+import type { Sorting } from "./TopBar";
+export type { Sorting } from "./TopBar";
 
 type Props = {
   users: Array<User>,
@@ -73,17 +70,10 @@ export default class UserList extends View<Props, State> {
 
   renderToolbar() {
     return (
-      <Toolbar>
-        <SelectSorting sorting={this.state.sorted}
-          onChange={this.changeSorting} />
-        <TextField label="search..." onChange={this.handleSearch} style={{
-          marginLeft: 10,
-          marginRight: 24,
-          flex: 1,
-          marginBottom: 5
-        }} type="search" />
-        <AddUser addUser={this.props.addUser} />
-      </Toolbar>
+      <TopBar sorted={this.state.sorted}
+        changeSorting={this.changeSorting}
+        handleSearch={this.handleSearch}
+        addUser={this.props.addUser} />
     );
   }
 

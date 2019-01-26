@@ -34,30 +34,11 @@ const fnordCreditTheme = createMuiTheme({
     }
   },
   typography: {
-    fontSize: 24,
     display4: {
       color: "#FFFFFF"
     },
     display3: {
       color: "#FFFFFF"
-    },
-    body1: {
-      fontSize: 20
-    },
-    body2: {
-      fontSize: 20
-    },
-    title: {
-      fontSize: 26
-    },
-    caption: {
-      fontSize: 24
-    },
-    button: {
-      fontSize: 22
-    },
-    subheading: {
-      fontSize: 20
     }
   }
 });
