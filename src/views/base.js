@@ -25,10 +25,12 @@ export default class View<P, S> extends React.Component<P, S> {
 
   render() {
     return [
-      <AppBar position="static" key="toolbar">
+      <AppBar position="fixed" key="appbarontop" style={{ height: 64 }}>
         {this.renderToolbar()}
       </AppBar>,
-      this.renderView()
+      <div key="contentcontainer" style={{ marginTop: 68 }}>
+        {this.renderView()}
+      </div>
     ];
   }
 }

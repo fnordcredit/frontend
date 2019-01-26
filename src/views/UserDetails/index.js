@@ -104,7 +104,7 @@ export default class UserDetails extends View<Props, State> {
     return (
       <div style={{ padding: 15 }}>
         <BarcodeScanner onSuccess={this.scannerSuccess} />
-        <Grid container style={{ marginTop: 25 }} justify="center">
+        <Grid container justify="center">
           <Grid item xs={12} md={3} style={{ paddingRight: 10 }}>
             <AsidePanel user={this.state.user}
               transactions={this.state.lastTransactions} />
