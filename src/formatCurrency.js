@@ -19,10 +19,10 @@ const format = (amount: number, options: FormatOptions) => {
   const useColor = color === "colorful" || (amount < 0 && color === "negOnly");
   const colorStyle = useColor ? (amount < 0 ? "red" : "lightGreen") : "inherit";
   const props = {
-    style: {
-      color: colorStyle,
-      display: options.inline ? "inline" : "inherit"
-    }
+    style: Object.assign({},
+      { display: options.inline ? "inline" : "inherit" },
+      useColor ? { color: colorStyle } : {}
+    )
   };
   return (
     <Typography {...props} {...options.extraProps || {}}>
