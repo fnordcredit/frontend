@@ -143,7 +143,7 @@ export default class UserDetails extends View<Props, State> {
           User: {this.state.user.name}
         </Typography>
         <Button variant="fab" color="secondary"
-          style={{ top: 28, marginLeft: "2.5em" }}>
+          style={{ top: 28, marginLeft: "2.5em", visibility: "hidden" }}>
           <Icon>settings</Icon>
         </Button>
       </Toolbar>
