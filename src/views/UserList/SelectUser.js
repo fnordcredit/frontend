@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import currency from "formatCurrency";
 import LargeButton from "components/LargeButton";
 
 type Props = {
@@ -7,20 +8,14 @@ type Props = {
   onClick: (u: User) => void
 };
 
-export default class SelectUser extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
+const SelectUser = (props: Props) => (
+  <LargeButton variant="raised" color="primary"
+    onClick={() => props.onClick(props.user)}
+    style={{ overflowWrap: "break-word" }}>
+    {props.user.name}
+    <br/>
+    {currency.format(props.user.credit, { color: "negOnly" })}
+  </LargeButton>
+);
 
-  render() {
-    return (
-      <LargeButton variant="raised" color="primary"
-        onClick={() => this.props.onClick(this.props.user)}>
-        {this.props.user.name}
-        <br/>
-        {this.props.user.credit.toFixed(2)}€
-      </LargeButton>
-    );
-  }
-}
-
+export default SelectUser;

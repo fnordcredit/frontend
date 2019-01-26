@@ -17,12 +17,13 @@ type FormatOptions = {
 const format = (amount: number, options: FormatOptions) => {
   const color = options.color || "none";
   const useColor = color === "colorful" || (amount < 0 && color === "negOnly");
-  const props = useColor ? {
+  const colorStyle = useColor ? (amount < 0 ? "red" : "lightGreen") : "inherit";
+  const props = {
     style: {
-      color: amount < 0 ? "red" : "lightGreen",
+      color: colorStyle,
       display: options.inline ? "inline" : "inherit"
     }
-  } : {};
+  };
   return (
     <Typography {...props} {...options.extraProps || {}}>
       {formatString(amount, options.fmt || "normal")}
