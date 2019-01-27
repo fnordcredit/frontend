@@ -24,6 +24,9 @@ const styles = (_theme) => ({
     minHeight: 64,
     maxHeight: 64,
     paddingTop: 3
+  },
+  labelContainer: {
+    padding: "3px 24px"
   }
 });
 
