@@ -60,7 +60,7 @@ export default class UserDetails extends View<Props, State> {
     API.buyProduct(this.state.user, product)
       .then((response) => {
         this.setState({
-          successMsg: `Successfully bought ${product.name}`
+          successMsg: `Successfully bought ${product.name} `
             + `for ${Cur.formatString(product.price)}`,
           user: response.data
         });
