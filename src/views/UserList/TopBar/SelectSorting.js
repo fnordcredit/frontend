@@ -3,8 +3,9 @@ import React from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Restore from "@material-ui/icons/Restore";
-import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
-import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp";
+import ArrowDown from "@material-ui/icons/KeyboardArrowDown";
+import ArrowUp from "@material-ui/icons/KeyboardArrowUp";
+import { withStyles } from "@material-ui/core/styles";
 
 export type Sorting = "abc" | "zyx" | "last";
 
@@ -13,23 +14,29 @@ type Props = {
   sorting: Sorting
 };
 
-export default class SelectSorting extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
+const handleChange = (onChange: $PropertyType<Props, "onChange">) =>
+  (_e: Event, value: Sorting) => (
+    onChange(value)
+  );
 
-  handleChange = (event: Event, value: "last" | "abc" | "zyx") => {
-    this.props.onChange(value);
+const styles = (_theme) => ({
+  labelIcon: {
+    minHeight: 64,
+    maxHeight: 64,
+    paddingTop: 3
   }
+});
 
-  render() {
-    return (
-      <Tabs value={this.props.sorting} onChange={this.handleChange}
-        indicatorColor="secondary" textColor="secondary" style={{ flex: 1 }}>
-        <Tab value="last" icon={<Restore />} label="most recent" />
-        <Tab value="abc" icon={<KeyboardArrowDown />} label="abc" />
-        <Tab value="zyx" icon={<KeyboardArrowUp />} label="zyx" />
-      </Tabs>
-    );
-  }
-}
+const SelectSorting = withStyles(styles)(
+  ({ classes, onChange, sorting }: Props & Classes) => (
+    <Tabs value={sorting} onChange={handleChange(onChange)}
+      indicatorColor="secondary" textColor="secondary" style={{ flex: 1 }}>
+      <Tab value="last" icon={<Restore />} label="most recent"
+        classes={classes} />
+      <Tab value="abc" icon={<ArrowDown />} label="abc" classes={classes} />
+      <Tab value="zyx" icon={<ArrowUp />} label="zyx" classes={classes} />
+    </Tabs>
+  )
+);
+
+export default SelectSorting;

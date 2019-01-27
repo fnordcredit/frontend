@@ -1,3 +1,5 @@
+type Classes = { classes: Object };
+
 type User = {
   credit: number,
   id: number,
