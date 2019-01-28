@@ -17,6 +17,7 @@ const styles = (theme) => ({
     display: "inline-block",
     margin: theme.spacing.unit,
     width: 200,
+    height: 140,
     cursor: "pointer",
     background: theme.palette.primary.main,
     "&:hover": {
