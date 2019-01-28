@@ -3,6 +3,7 @@ import React from "react";
 import View from "views/base";
 
 import Toolbar from "@material-ui/core/Toolbar";
+import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -143,10 +144,10 @@ export default class UserDetails extends View<Props, State> {
         <Typography style={{ flex: 1 }} variant="title" align="center">
           User: {this.state.user.name}
         </Typography>
-        <Button variant="fab" color="secondary"
+        <Fab color="secondary"
           style={{ top: 28, marginLeft: "2.5em", visibility: "hidden" }}>
           <SettingsIcon />
-        </Button>
+        </Fab>
       </Toolbar>
     );
   }

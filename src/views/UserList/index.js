@@ -79,7 +79,7 @@ export default class UserList extends View<Props, State> {
 
   renderView() {
     return (
-      <div style={{ marginTop: 28 }}>
+      <div style={{ paddingTop: 28, textAlign: "center" }}>
         {this.props.users.sort(this.sortUsers).filter(this.filterUsers)
           .map(this.renderUser)
         }

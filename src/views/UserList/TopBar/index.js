@@ -27,11 +27,10 @@ const searchStyles = (theme) => ({
       backgroundColor: fade(theme.palette.common.white, 0.25)
     },
     marginRight: theme.spacing.unit * 4,
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing.unit * 3,
-      width: "auto"
+    marginLeft: theme.spacing.unit * 3,
+    width: "auto",
+    [theme.breakpoints.down("sm")]: {
+      display: "none"
     }
   },
   searchIcon: {
