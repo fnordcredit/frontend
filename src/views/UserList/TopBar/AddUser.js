@@ -6,7 +6,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Icon from "@material-ui/core/Icon";
+import AddIcon from "@material-ui/icons/Add";
 import TextField from "@material-ui/core/TextField";
 
 type State = {
@@ -71,7 +71,7 @@ export default class AddUser extends React.Component<Props, State> {
     return [
       <Fab color="secondary" onClick={this.openDialog}
         style={{ top: 28 }} key="fab">
-        <Icon>add</Icon>
+        <AddIcon />
       </Fab>,
       this.renderDialog()
     ];

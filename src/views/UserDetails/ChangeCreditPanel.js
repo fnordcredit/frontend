@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import Icon from "@material-ui/core/Icon";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 import LargeButton from "components/LargeButton";
 import Typography from "@material-ui/core/Typography";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
@@ -48,7 +48,7 @@ export default class ChangeCreditPanel<T:number | Product>
   render() {
     return (
       <ExpansionPanel defaultExpanded>
-        <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
+        <ExpansionPanelSummary expandIcon={<ExpandMore />}>
           <Typography>{this.props.category}</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails style={{ display: "block" }}>

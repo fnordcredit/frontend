@@ -3,11 +3,12 @@ import React from "react";
 import View from "views/base";
 
 import Toolbar from "@material-ui/core/Toolbar";
-import Icon from "@material-ui/core/Icon";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Snackbar from "@material-ui/core/Snackbar";
+import KeyboardBackspace from "@material-ui/icons/KeyboardBackspace";
+import SettingsIcon from "@material-ui/icons/Settings";
 import API from "API";
 import Cur from "formatCurrency";
 import AsidePanel from "./AsidePanel";
@@ -137,14 +138,14 @@ export default class UserDetails extends View<Props, State> {
     return (
       <Toolbar>
         <Button onClick={this.props.backToList}>
-          <Icon>keyboard_backspace</Icon> Back
+          <KeyboardBackspace /> Back
         </Button>
         <Typography style={{ flex: 1 }} variant="title" align="center">
           User: {this.state.user.name}
         </Typography>
         <Button variant="fab" color="secondary"
           style={{ top: 28, marginLeft: "2.5em", visibility: "hidden" }}>
-          <Icon>settings</Icon>
+          <SettingsIcon />
         </Button>
       </Toolbar>
     );

@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import UserDetails from "views/UserDetails";
 import UserList from "views/UserList";
 import fnordCreditTheme from "colors";
@@ -97,6 +98,7 @@ export class App extends React.Component<Props, State> {
 export default function StyledApp(props: Props) {
   return (
     <MuiThemeProvider theme={theme}>
+      <CssBaseline />
       <App {...props} />
     </MuiThemeProvider>
   );

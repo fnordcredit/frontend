@@ -2,7 +2,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "components/App";
-import "../css/app.css";
+import "typeface-roboto";
 
 // $FlowFixMe
 const content: Element = document.getElementById("content");

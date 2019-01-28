@@ -2,36 +2,11 @@
 import * as MuiColors from "@material-ui/core/colors";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
-export const background = "#4e5d6c";
-export const lightBackground = "#637f7a";
-export const darkBackground = "#404f5e";
-export const textColor = MuiColors.blueGrey[50];
-export const active = MuiColors.teal[200];
-export const red = MuiColors.red[600];
-export const green = MuiColors.lightGreen[700];
-
-export const fnordBlue = {
-  [50]: "#a1cbf2",
-  [100]: "#80a0bf",
-  [200]: "#6c87a1",
-  [300]: "#637f7a",
-  [400]: "#55647d",
-  [500]: "#4e5d6c",
-  [600]: "#485664",
-  [700]: "#404f5e",
-  [800]: "#364451",
-  [900]: "#303946",
-  contrastDefaultColor: "light"
-};
-
 const fnordCreditTheme = createMuiTheme({
   palette: {
-    primary: fnordBlue,
+    primary: MuiColors.indigo,
     secondary: MuiColors.lightBlue,
-    type: "dark",
-    background: {
-      paper: "#384B5D"
-    }
+    type: "dark"
   },
   typography: {
     display4: {
