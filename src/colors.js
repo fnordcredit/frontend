@@ -4,8 +4,15 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 const fnordCreditTheme = createMuiTheme({
   palette: {
-    primary: MuiColors.indigo,
+    primary: {
+      main: "#2e4763",
+      dark: "#002039",
+      light: "#5a7291"
+    },
     secondary: MuiColors.lightBlue,
+    background: {
+      paper: "#22374d"
+    },
     type: "dark"
   },
   typography: {

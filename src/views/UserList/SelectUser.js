@@ -18,8 +18,9 @@ const styles = (theme) => ({
     margin: theme.spacing.unit,
     width: 200,
     cursor: "pointer",
+    background: theme.palette.primary.main,
     "&:hover": {
-      background: fade(theme.palette.common.white, 0.15)
+      background: fade(theme.palette.primary.main, 0.65)
     }
   },
   title: {
