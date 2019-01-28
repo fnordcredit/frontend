@@ -20,7 +20,7 @@ const format = (amount: number, options: FormatOptions) => {
   const colorStyle = useColor ? (amount < 0 ? "red" : "lightGreen") : "inherit";
   const props = {
     style: Object.assign({},
-      { display: options.inline ? "inline" : "inherit" },
+      options.inline ? { display: "inline" } : {},
       useColor ? { color: colorStyle } : {}
     )
   };
