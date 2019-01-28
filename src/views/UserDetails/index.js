@@ -28,7 +28,8 @@ type State = {
   successMsg: string,
   user: User,
   lastTransactions: Array<Transaction> | "disabled",
-  dialogError?: ?$AxiosError<any>
+  dialogError?: ?$AxiosError<any>,
+  timeout: ?TimeoutID
 };
 
 export default class UserDetails extends View<Props, State> {
@@ -38,12 +39,34 @@ export default class UserDetails extends View<Props, State> {
       successMsg: "",
       user: props.user,
       lastTransactions: [],
-      dialogError: null
+      dialogError: null,
+      timeout: setTimeout(this.onTimeout, 60*1000)
     };
     this.updateTransactions();
   }
 
+  onTimeout = () => {
+    this.props.backToList();
+  }
+
+  resetTimeout = () => {
+    this.stopTimeout();
+    this.setState({ timeout: setTimeout(this.onTimeout, 60*1000) });
+  }
+
+  stopTimeout = () => {
+    if (this.state.timeout != null) {
+      clearTimeout(this.state.timeout);
+      this.setState({ timeout: null });
+    }
+  }
+
+  componentWillUnmount = () => {
+    this.stopTimeout();
+  }
+
   addCredit = (amount: number) => () => {
+    this.resetTimeout();
     const msg = amount < 0
       ? `Successfully removed ${Cur.formatString(amount)} from your Account`
       : `Successfully added ${Cur.formatString(amount)} to your Account`;
@@ -59,6 +82,7 @@ export default class UserDetails extends View<Props, State> {
   }
 
   buyProduct = (product: Product) => () => {
+    this.resetTimeout();
     API.buyProduct(this.state.user, product)
       .then((response) => {
         this.setState({
@@ -95,11 +119,13 @@ export default class UserDetails extends View<Props, State> {
   }
 
   showError = (error: $AxiosError<any>) => {
+    this.stopTimeout();
     this.setState({ dialogError: error });
   }
 
   closeErrorMsg = () => {
     this.setState({ dialogError: null });
+    this.resetTimeout();
   }
 
   renderView() {
