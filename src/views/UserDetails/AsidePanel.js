@@ -31,7 +31,8 @@ export default class AsidePanel extends React.Component<Props> {
             Cur.format(transaction.delta, {
               fmt: "diff",
               color: "colorful",
-              inline: true
+              inline: true,
+              extraProps: { key: "amount" }
             }),
             description
           ]}

@@ -8,10 +8,13 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Snackbar from "@material-ui/core/Snackbar";
+import Dialog from "@material-ui/core/Dialog";
 import KeyboardBackspace from "@material-ui/icons/KeyboardBackspace";
 import SettingsIcon from "@material-ui/icons/Settings";
+import withStyles from "@material-ui/core/styles/withStyles";
 import API from "API";
 import Cur from "formatCurrency";
+import UserSettings from "views/UserSettings";
 import AsidePanel from "./AsidePanel";
 import ChangeCreditPanel from "./ChangeCreditPanel";
 import BarcodeScanner from "components/BarcodeScanner";
@@ -29,18 +32,26 @@ type State = {
   user: User,
   lastTransactions: Array<Transaction> | "disabled",
   dialogError?: ?$AxiosError<any>,
-  timeout: ?TimeoutID
+  timeout: ?TimeoutID,
+  settingsOpen: boolean
 };
 
-export default class UserDetails extends View<Props, State> {
-  constructor(props: Props) {
+const styles = (theme) => ({
+  dialogPaper: {
+    background: theme.palette.background.default
+  }
+});
+
+class UserDetails extends View<Props & Classes, State> {
+  constructor(props: Props & Classes) {
     super(props);
     this.state = {
       successMsg: "",
       user: props.user,
       lastTransactions: [],
       dialogError: null,
-      timeout: setTimeout(this.onTimeout, 60*1000)
+      timeout: setTimeout(this.onTimeout, 60*1000),
+      settingsOpen: false
     };
     this.updateTransactions();
   }
@@ -128,6 +139,16 @@ export default class UserDetails extends View<Props, State> {
     this.resetTimeout();
   }
 
+  openSettings = () => {
+    this.stopTimeout();
+    this.setState({ settingsOpen: true });
+  }
+
+  closeSettings = () => {
+    this.setState({ settingsOpen: false });
+    this.resetTimeout();
+  }
+
   renderView() {
     return (
       <div style={{ padding: 15 }}>
@@ -167,14 +188,24 @@ export default class UserDetails extends View<Props, State> {
         <Button onClick={this.props.backToList}>
           <KeyboardBackspace /> Back
         </Button>
-        <Typography style={{ flex: 1 }} variant="title" align="center">
+        <Typography style={{ flex: 1 }} variant="h6" align="center">
           User: {this.state.user.name}
         </Typography>
         <Fab color="secondary"
-          style={{ top: 28, marginLeft: "2.5em", visibility: "hidden" }}>
+          style={{ top: 28, marginLeft: "2.5em" }}
+          onClick={this.openSettings}>
           <SettingsIcon />
         </Fab>
+        <Dialog fullScreen
+          open={this.state.settingsOpen}
+          onClose={this.closeSettings}
+          classes={{ paper: this.props.classes.dialogPaper }}
+        >
+          <UserSettings onClose={this.closeSettings} user={this.state.user} />
+        </Dialog>
       </Toolbar>
     );
   }
 }
+
+export default withStyles(styles)(UserDetails);

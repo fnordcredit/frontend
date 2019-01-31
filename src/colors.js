@@ -21,7 +21,8 @@ const fnordCreditTheme = createMuiTheme({
     },
     display3: {
       color: "#FFFFFF"
-    }
+    },
+    useNextVariants: true
   }
 });
 
