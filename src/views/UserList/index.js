@@ -21,13 +21,10 @@ type State = {
 };
 
 export default class UserList extends View<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      sorted: "last",
-      search: ""
-    };
-  }
+  state = {
+    sorted: "last",
+    search: ""
+  };
 
   sortUsers = (a: User, b: User) => {
     switch (this.state.sorted) {
