@@ -37,21 +37,30 @@ const styles = (theme) => ({
   }
 });
 
-const SelectUser = withStyles(styles)((props: Props & Classes) => (
-  <Card onClick={() => props.onClick(props.user)}
-    classes={{ root: props.classes.card }}>
-    <CardContent className={props.classes.title}>
-      <Typography align="center" variant="h6">
-        {props.user.name}
-      </Typography>
-    </CardContent>
-    {
-      currency.format(props.user.credit, {
-        color: "negOnly",
-        extraProps: { align: "center", className: props.classes.amount }
-      })
-    }
-  </Card>
-));
+class SelectUser extends React.PureComponent<Props & Classes> {
+  onClick = () => {
+    const { onClick, user } = this.props;
+    onClick(user);
+  }
 
-export default SelectUser;
+  render() {
+    const { classes, user } = this.props;
+
+    return <Card onClick={this.onClick} classes={{ root: classes.card }}>
+      <CardContent className={classes.title}>
+        <Typography align="center" variant="h6">
+          {user.name}
+        </Typography>
+      </CardContent>
+      {
+        currency.format(user.credit, {
+          color: "negOnly",
+          extraProps: { align: "center", className: classes.amount }
+        })
+      }
+    </Card>;
+  }
+}
+
+
+export default withStyles(styles)(SelectUser);
