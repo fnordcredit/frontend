@@ -1,7 +1,9 @@
 // @flow
-import React from "react";
+import React, { useContext, useState } from "react";
 
-import View from "views/base";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import UsersContext, { UserLoader } from "contexts/Users";
+import useErrorHandler from "contexts/Error";
 import TopBar from "./TopBar";
 import SelectUser from "./SelectUser";
 import API from "API";
@@ -10,77 +12,65 @@ import type { Sorting } from "./TopBar";
 export type { Sorting } from "./TopBar";
 
 type Props = {
-  users: Array<User>,
-  addUser: (u: string) => void,
   selectUser: (u: User) => void
 };
 
-type State = {
-  sorted: Sorting,
-  search: string
+const filterUser = (search: string) => (user: User) => (
+  user.name.toLowerCase().indexOf(search.toLowerCase()) >= 0
+);
+const sortUser = (sorting: Sorting) => (a: User, b: User) => {
+  switch (sorting) {
+  case "last": return Math.sign(b.lastchanged - a.lastchanged);
+  case "zyx": return b.name.localeCompare(a.name);
+  default: return a.name.localeCompare(b.name);
+  }
 };
 
-export default class UserList extends View<Props, State> {
-  state = {
-    sorted: "last",
-    search: ""
-  };
+const addUser = (selectUser, handleError) => (user: string) => {
+  API.addUser(user)
+    .then((response) => {
+      const users = response.data;
+      const u = users.find((us) => (us.name === user ? us : null));
+      if (u != null) {
+        selectUser(u);
+      } else {
+        handleError("Something went wrong. We are not sure what :(");
+      }
+    }).catch(handleError);
+};
 
-  sortUsers = (a: User, b: User) => {
-    switch (this.state.sorted) {
-    case "last": return Math.sign(b.lastchanged - a.lastchanged);
-    case "zyx": return b.name.localeCompare(a.name);
-    default: return a.name.localeCompare(b.name);
-    }
-  }
-
-  selectUser = (user: User, pin?: string) => {
-    API.getUser(user, pin)
-      .then((response) => {
-        this.props.selectUser(response.data);
-      })
-      .catch((error) => {
-        if (error.request.status === 401) {
-          // Pin Required
-        } else {
-          // Error
-        }
-      });
-  }
-
-  changeSorting = (sorting: Sorting) => {
-    this.setState({ sorted: sorting });
-  }
-
-  handleSearch = (event: Event) => {
-    // $FlowFixMe
-    this.setState({ search: event.target.value });
-  }
-
-  filterUsers = (user: User) => (
-    user.name.toLowerCase().indexOf(this.state.search.toLowerCase()) >= 0
-  )
-
-  renderUser = (u: User) => (
-    <SelectUser user={u} key={u.name} onClick={this.selectUser} />
+const UserList = ({ sorting, search, selectUser }) => {
+  const { users } = useContext(UsersContext);
+  return (
+    <div style={{ textAlign: "center" }}>
+      {users.sort(sortUser(sorting)).filter(filterUser(search)).map((u) =>
+        <SelectUser user={u} key={u.name} onClick={selectUser} />
+      )}
+    </div>
   );
+};
 
-  renderToolbar() {
-    return (
-      <TopBar sorted={this.state.sorted}
-        changeSorting={this.changeSorting}
-        handleSearch={this.handleSearch}
-        addUser={this.props.addUser} />
-    );
-  }
+const LoadIndicator = React.memo(() => (
+  <CircularProgress color="secondary" size={96} style={{ margin: "32 auto" }} />
+));
 
-  renderView() {
-    return (
-      <div style={{ paddingTop: 28, textAlign: "center" }}>
-        {this.props.users.sort(this.sortUsers).filter(this.filterUsers)
-          .map(this.renderUser)
-        }
-      </div>
-    );
-  }
-}
+const UserListView = React.memo<Props>(({ selectUser }: Props) => {
+  const [sorting, setSorting] = useState("last");
+  const [search, setSearch] = useState("");
+  const handleError = useErrorHandler();
+  return (
+    <React.Fragment>
+      <TopBar sorted={sorting}
+        changeSorting={setSorting}
+        handleSearch={setSearch}
+        addUser={addUser(selectUser, handleError)} />
+      <main style={{marginTop: 82}}>
+        <UserLoader fallback={<LoadIndicator />}>
+          <UserList sorting={sorting} search={search} selectUser={selectUser} />
+        </UserLoader>
+      </main>
+    </React.Fragment>
+  );
+});
+
+export default UserListView;

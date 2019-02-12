@@ -1,12 +1,13 @@
 // @flow
-import React from "react";
-import Toolbar from "@material-ui/core/Toolbar";
+import React, { useState } from "react";
 import InputBase from "@material-ui/core/InputBase";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import { withStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
+import AddIcon from "@material-ui/icons/Add";
+import TopBar from "components/TopBar";
 import SelectSorting from "./SelectSorting";
-import AddUser from "./AddUser";
+import AddUserDialog from "../AddUserDialog";
 
 import type { Sorting } from "./SelectSorting";
 export type { Sorting } from "./SelectSorting";
@@ -14,7 +15,7 @@ export type { Sorting } from "./SelectSorting";
 export type TopBarProps = {
   sorted: Sorting,
   changeSorting: (s: Sorting) => void,
-  handleSearch: (e: Event) => void,
+  handleSearch: (s: string) => void,
   addUser: (u: string) => void
 };
 
@@ -75,13 +76,25 @@ const SearchBar = withStyles(searchStyles)(({classes, handleSearch}) => (
   </div>
 ));
 
-const TopBar = (props: TopBarProps) => (
-  <Toolbar>
-    <SelectSorting sorting={props.sorted}
-      onChange={props.changeSorting} />
-    <SearchBar handleSearch={props.handleSearch} />
-    <AddUser addUser={props.addUser} />
-  </Toolbar>
-);
+const UserListTopBar = React.memo<TopBarProps>((props: TopBarProps) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const handleDialogClose = () => setDialogOpen(false);
+  const handleDialogOpen = () => setDialogOpen(true);
+  return (
+    <React.Fragment>
+      <TopBar
+        leftNode={<SelectSorting sorting={props.sorted}
+          onChange={props.changeSorting} />
+        } rightNode={
+          <SearchBar handleSearch={(e) => props.handleSearch(e.target.value)} />
+        } fabIcon={<AddIcon />}
+        fabAction={handleDialogOpen}
+      />
+      <AddUserDialog addUser={props.addUser}
+        onClose={handleDialogClose}
+        open={dialogOpen} />
+    </React.Fragment>
+  );
+});
 
-export default TopBar;
+export default UserListTopBar;

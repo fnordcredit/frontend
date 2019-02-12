@@ -1,105 +1,47 @@
 // @flow
-import React from "react";
+import React, { useState } from "react";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import UserDetails from "views/UserDetails";
 import UserList from "views/UserList";
+import UserSettings from "views/UserSettings";
 import fnordCreditTheme from "colors";
-import API from "API";
+import { ProductLoader } from "contexts/Products";
+import { ErrorHandler } from "contexts/Error";
 
-type Props = {};
-type State = {
-  users: Array<User>,
-  products: Array<Product>,
-  view: "userList" | "userDetail",
-  selectedUser: ?User,
-};
+export type View = { type: "list" }
+  | { type: "details", user: User }
+  | { type: "settings", user: User };
 
-const theme = fnordCreditTheme;
-
-export class App extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      users: [],
-      products: [],
-      view: "userList",
-      selectedUser: null
-    };
-
-    this.getAllProducts();
-    this.getAllUsers();
+const App = React.memo(() => {
+  const [view, setView] = useState({ type: "list" });
+  const toUserList = () => setView({ type: "list" });
+  const toUserDetails = (u: User) => setView({ type: "details", user: u });
+  const toUserSettings = (u: User) => setView({ type: "settings", user: u });
+  switch (view.type) {
+  case "details": return (
+    <UserDetails user={view.user} backToList={toUserList}
+      openSettings={toUserSettings} />
+  );
+  case "settings": return (
+    <UserSettings onClose={toUserDetails} user={view.user} />
+  );
+  case "list":
+  default: return (
+    <UserList selectUser={toUserDetails} />
+  );
   }
+});
 
-  catchError = (error: any) => {
-    // TODO: Catch error
-    // eslint-disable-next-line no-console
-    console.log(error);
-  }
-
-  getAllProducts = () => {
-    API.getAllProducts()
-      .then((response) => {
-        this.setState({products: response.data});
-      }).catch(this.catchError);
-  }
-
-  getAllUsers = (callback?: (users: Array<User>) => void) => {
-    API.getAllUsers()
-      .then((response) => {
-        this.setState({users: response.data});
-        if (callback != null) {
-          callback(response.data);
-        }
-      })
-      .catch(this.catchError);
-  }
-
-  addUser = (user: string) => {
-    API.addUser(user)
-      .then((response) => {
-        const users = response.data;
-        this.setState({users: users});
-        const u = users.find((us) => (us.name === user ? us : null));
-        if (u != null) {
-          this.setState({selectedUser: u, view: "userDetail"});
-        }
-      })
-      .catch(this.catchError);
-  }
-
-  selectUser = (user: User) => {
-    this.setState({ view: "userDetail", selectedUser: user });
-  }
-
-  backToList = () => {
-    this.getAllUsers();
-    this.setState({view: "userList"});
-  }
-
-  render = () => {
-    if (this.state.view === "userList") {
-      return (<UserList
-        users={this.state.users}
-        addUser={this.addUser}
-        selectUser={this.selectUser} />);
-    }
-    if (this.state.view === "userDetail" && this.state.selectedUser != null) {
-      return (<UserDetails user={this.state.selectedUser}
-        backToList={this.backToList}
-        products={this.state.products} />);
-    }
-    return null;
-  }
-
-}
-
-export default function StyledApp(props: Props) {
+export default function StyledApp() {
   return (
-    <MuiThemeProvider theme={theme}>
+    <MuiThemeProvider theme={fnordCreditTheme}>
       <CssBaseline />
-      <App {...props} />
+      <ProductLoader>
+        <ErrorHandler>
+          <App />
+        </ErrorHandler>
+      </ProductLoader>
     </MuiThemeProvider>
   );
 }

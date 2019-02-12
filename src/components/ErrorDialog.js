@@ -11,7 +11,7 @@ import type { $AxiosError } from "axios";
 export type Props = {
   open: boolean,
   onClose: () => void,
-  error?: ?$AxiosError<any>
+  error?: (?$AxiosError<any> | string)
 };
 
 export default class ErrorDialog extends React.Component<Props> {
@@ -39,7 +39,9 @@ export default class ErrorDialog extends React.Component<Props> {
                   || this.props.error.response.statusText))
                   || this.props.error.code
                   || "Unknown Error"
-                : "Unknown Error"
+                : (typeof this.props.error === "string"
+                  && this.props.error)
+                  || "Unknown Error"
             }
           </DialogContentText>
         </DialogContent>

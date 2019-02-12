@@ -7,7 +7,7 @@ module.exports = {
   "extends": [
     "eslint:recommended",
     "plugin:flowtype/recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -17,7 +17,7 @@ module.exports = {
     "sourceType": "module"
   },
   "plugins": [
-    "react", "flowtype"
+    "react", "flowtype", "fp"
   ],
   "globals": {
     "require": false
@@ -136,6 +136,9 @@ module.exports = {
     // react
     "react/prop-types": "off",
     "react/display-name": "off",
+    "react/jsx-no-comment-textnodes": "error",
+    "react/jsx-key": "error",
+    "react/jsx-handler-names": "warn",
 
     // flow
     "flowtype/no-dupe-keys": "error",

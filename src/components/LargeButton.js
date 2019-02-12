@@ -15,4 +15,4 @@ const largeButtonStyles = (_theme) => ({
 
 class LargeButton extends Button {}
 
-export default withStyles(largeButtonStyles)(LargeButton)
+export default withStyles(largeButtonStyles)(LargeButton);
