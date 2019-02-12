@@ -1,4 +1,7 @@
+import { type Node } from "react";
+
 type Classes = { classes: Object };
+type Children = { children: Node };
 
 type User = {
   credit: number,

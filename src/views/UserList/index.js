@@ -7,6 +7,7 @@ import useErrorHandler from "contexts/Error";
 import TopBar from "./TopBar";
 import SelectUser from "./SelectUser";
 import API from "API";
+import Main from "components/Main";
 
 import type { Sorting } from "./TopBar";
 export type { Sorting } from "./TopBar";
@@ -64,11 +65,11 @@ const UserListView = React.memo<Props>(({ selectUser }: Props) => {
         changeSorting={setSorting}
         handleSearch={setSearch}
         addUser={addUser(selectUser, handleError)} />
-      <main style={{marginTop: 82}}>
+      <Main>
         <UserLoader fallback={<LoadIndicator />}>
           <UserList sorting={sorting} search={search} selectUser={selectUser} />
         </UserLoader>
-      </main>
+      </Main>
     </React.Fragment>
   );
 });

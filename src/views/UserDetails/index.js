@@ -11,6 +11,7 @@ import AsidePanel from "./AsidePanel";
 import ChangeCreditPanel from "./ChangeCreditPanel";
 import BarcodeScanner from "components/BarcodeScanner";
 import TopBar from "components/TopBar";
+import Main from "components/Main";
 import ProductsContext from "contexts/Products";
 import useErrorHandler from "contexts/Error";
 
@@ -95,12 +96,14 @@ const UserDetails = (props: Props) => {
         </Button>
       } title={`User: ${props.user.name}`}
       fabIcon={<SettingsIcon />} fabAction={openSettings} />
-      <Grid container justify="center" style={{ paddingTop: 82, margin: 12 }}>
-        <Grid item xs={12} md={3} style={{ paddingRight: 10 }}>
-          <AsidePanel user={user} transactions={"disabled"} />
+      <Main>
+        <Grid container justify="center">
+          <Grid item xs={12} md={3} style={{ paddingRight: 10 }}>
+            <AsidePanel user={user} transactions={"disabled"} />
+          </Grid>
+          <ChangeCreditPanels addCredit={addCredit} />
         </Grid>
-        <ChangeCreditPanels addCredit={addCredit} />
-      </Grid>
+      </Main>
       <Snackbar
         open={snackbarMsg !== ""}
         onClose={closeSnackbar}
