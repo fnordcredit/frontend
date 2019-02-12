@@ -1,10 +1,11 @@
 // @flow
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Snackbar from "@material-ui/core/Snackbar";
 import KeyboardBackspace from "@material-ui/icons/KeyboardBackspace";
 import SettingsIcon from "@material-ui/icons/Settings";
+import { useIdle } from "react-use";
 import API from "API";
 import Cur from "formatCurrency";
 import AsidePanel from "./AsidePanel";
@@ -48,27 +49,16 @@ const ChangeCreditPanels = React.memo(({ addCredit }) => {
 });
 
 const UserDetails = (props: Props) => {
-  const [timeoutResetId, setTimeoutResetId] = useState(1);
-  useEffect(() => {
-    if (timeoutResetId !== 0) {
-      const id = setTimeout(props.backToList, 40 * 1000);
-      return () => clearTimeout(id);
-    }
-    return null;
-  }, [timeoutResetId]);
-  const resetTimeout = () => setTimeoutResetId(timeoutResetId + 1);
-  const stopTimeout = () => setTimeoutResetId(0);
+  const isIdle = useIdle(30e3);
+  if (isIdle) {
+    props.backToList();
+  }
   const openSettings = () => props.openSettings(props.user);
   const [user, setUser] = useState(props.user);
   const [snackbarMsg, setSnackbarMsg] = useState("");
   const closeSnackbar = () => setSnackbarMsg("");
-  const injErr = useErrorHandler(resetTimeout);
-  const handleError = (error) => {
-    stopTimeout();
-    injErr(error);
-  };
+  const handleError = useErrorHandler();
   const addCredit = (ap: Product | number) => () => {
-    resetTimeout();
     if (typeof ap === "number") {
       const am: number = ap;
       API.addCredit(user, am)
@@ -107,7 +97,7 @@ const UserDetails = (props: Props) => {
       <Snackbar
         open={snackbarMsg !== ""}
         onClose={closeSnackbar}
-        SnackbarContentProps={{
+        ContentProps={{
           "aria-describedby": "message-id"
         }}
         message={<span id="message-id">{snackbarMsg}</span>}
