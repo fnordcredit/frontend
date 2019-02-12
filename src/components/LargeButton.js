@@ -1,8 +1,8 @@
 // @flow
 import Button from "@material-ui/core/Button";
-import withStyles from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/styles/withStyles";
 
-const largeButtonStyles = (_theme) => ({
+const largeButtonStyles = {
   root: {
     textTransform: "none",
     height: 120,
@@ -11,8 +11,6 @@ const largeButtonStyles = (_theme) => ({
     margin: 10,
     cursor: "pointer"
   }
-});
+};
 
-class LargeButton extends Button {}
-
-export default withStyles(largeButtonStyles)(LargeButton);
+export default withStyles(largeButtonStyles)(Button);

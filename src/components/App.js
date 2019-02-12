@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from "react";
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import UserDetails from "views/UserDetails";
 import UserList from "views/UserList";
@@ -35,13 +35,13 @@ const App = React.memo(() => {
 
 export default function StyledApp() {
   return (
-    <MuiThemeProvider theme={fnordCreditTheme}>
+    <ThemeProvider theme={fnordCreditTheme}>
       <CssBaseline />
       <ProductLoader>
         <ErrorHandler>
           <App />
         </ErrorHandler>
       </ProductLoader>
-    </MuiThemeProvider>
+    </ThemeProvider>
   );
 }

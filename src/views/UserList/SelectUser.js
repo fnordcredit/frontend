@@ -1,10 +1,8 @@
 // @flow
 import React from "react";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import makeStyles from "@material-ui/styles/makeStyles";
 import currency from "formatCurrency";
 
 type Props = {
@@ -12,55 +10,43 @@ type Props = {
   onClick: (u: User) => void
 };
 
-const styles = (theme) => ({
-  card: {
+const useStyles = makeStyles((theme) => ({
+  button: {
     display: "inline-block",
-    margin: theme.spacing.unit,
     width: 200,
     height: 140,
-    cursor: "pointer",
-    background: theme.palette.primary.main,
-    "&:hover": {
-      background: fade(theme.palette.primary.main, 0.65)
-    }
+    margin: theme.spacing.unit,
+    textTransform: "none",
+    overflow: "hidden",
+    padding: 0
   },
   title: {
     marginTop: theme.spacing.unit * 5,
     padding: theme.spacing.unit,
-    "&:last-child": {
-      paddingBottom: theme.spacing.unit
-    },
     overflowWrap: "break-word"
   },
   amount: {
     padding: theme.spacing.unit * 2
   }
-});
+}));
 
-class SelectUser extends React.PureComponent<Props & Classes> {
-  onClick = () => {
-    const { onClick, user } = this.props;
-    onClick(user);
-  }
-
-  render() {
-    const { classes, user } = this.props;
-
-    return <Card onClick={this.onClick} classes={{ root: classes.card }}>
-      <CardContent className={classes.title}>
-        <Typography align="center" variant="h6">
-          {user.name}
-        </Typography>
-      </CardContent>
+const SelectUser = React.memo<Props>((props: Props) => {
+  const classes = useStyles();
+  const handleClick = () => props.onClick(props.user);
+  return (
+    <Button onClick={handleClick} className={classes.button}
+      variant="contained" color="primary">
+      <Typography align="center" variant="h6" className={classes.title}>
+        {props.user.name}
+      </Typography>
       {
-        currency.format(user.credit, {
+        currency.format(props.user.credit, {
           color: "negOnly",
           extraProps: { align: "center", className: classes.amount }
         })
       }
-    </Card>;
-  }
-}
+    </Button>
+  );
+});
 
-
-export default withStyles(styles)(SelectUser);
+export default SelectUser;
