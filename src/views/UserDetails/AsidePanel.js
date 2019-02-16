@@ -4,7 +4,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import ListItemText from "@material-ui/core/ListItemText";
-import Cur from "formatCurrency";
+import Currency from "components/Currency";
 import { DateTime } from "luxon";
 import Paper from "@material-ui/core/Paper";
 
@@ -28,12 +28,12 @@ export default class AsidePanel extends React.Component<Props> {
       <ListItem key={transaction.id}>
         <ListItemText
           primary={[
-            Cur.format(transaction.delta, {
-              fmt: "diff",
-              color: "colorful",
-              inline: true,
-              extraProps: { key: "amount" }
-            }),
+            <Currency amount={transaction.delta}
+              fmt="diff"
+              color="colorful"
+              inline={true}
+              key="amount"
+            />,
             description
           ]}
           secondary={
@@ -72,8 +72,8 @@ export default class AsidePanel extends React.Component<Props> {
         <List>
           <ListItem>
             <ListItemText
-              primary={Cur.format(this.props.user.credit,
-                { fmt: "normal", color: "negOnly"})}
+              primary={<Currency amount={this.props.user.credit}
+                fmt="normal" color="negOnly" />}
               secondary="Current Credit" />
           </ListItem>
         </List>

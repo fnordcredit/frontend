@@ -1,7 +1,7 @@
 // @flow
 import axios from "axios";
 import type { AxiosPromise } from "axios";
-import Cur from "formatCurrency";
+import * as Cur from "components/Currency";
 
 export default {
   addCredit: <T> (user: User, delta: number): AxiosPromise<T> => (

@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import Cur from "formatCurrency";
+import Currency from "components/Currency";
 
 type Props<T> = {
   products: Array<T>,
@@ -24,7 +24,6 @@ export default class ChangeCreditPanel<T:number | Product>
   renderButton(product: T) {
     const amount = typeof product !== "number" ? -product.price : product;
     const key = typeof product !== "number" ? product.id : product;
-    const priceTag = Cur.format(amount, { fmt: "diff", color: "colorful" });
     const extraText = typeof product !== "number" ? ` ${product.name}` : "";
     return (
       <LargeButton variant="raised" color="primary"
@@ -38,7 +37,7 @@ export default class ChangeCreditPanel<T:number | Product>
               marginLeft: -10
             }} /> : null}
         <div style={{ marginTop: 5 }}>
-          {priceTag}
+          <Currency amount={amount} fmt="diff" color="colorful" />
           {extraText}
         </div>
       </LargeButton>

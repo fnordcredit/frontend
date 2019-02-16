@@ -3,7 +3,7 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/styles/makeStyles";
-import currency from "formatCurrency";
+import Currency from "components/Currency";
 
 type Props = {
   user: User,
@@ -39,12 +39,10 @@ const SelectUser = React.memo<Props>((props: Props) => {
       <Typography align="center" variant="h6" className={classes.title}>
         {props.user.name}
       </Typography>
-      {
-        currency.format(props.user.credit, {
-          color: "negOnly",
-          extraProps: { align: "center", className: classes.amount }
-        })
-      }
+      <Currency amount={props.user.credit}
+        color="negOnly"
+        extraProps={{ align: "center", className: classes.amount }}
+      />
     </Button>
   );
 });
