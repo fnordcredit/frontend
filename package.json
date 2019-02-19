@@ -9,7 +9,7 @@
     "build": "webpack -p --bail",
     "travis": "yarn lint && yarn build",
     "lint": "eslint --ext js --ext jsx src/",
-    "precommit": "yarn lint --fix"
+    "precommit": "yarn lint"
   },
   "dependencies": {
     "@material-ui/core": "^3.9.0",
