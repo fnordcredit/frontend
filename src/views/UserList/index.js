@@ -8,6 +8,7 @@ import TopBar from "./TopBar";
 import SelectUser from "./SelectUser";
 import API from "API";
 import Main from "components/Main";
+import BarcodeScanner from "components/BarcodeScanner";
 
 import type { Sorting } from "./TopBar";
 export type { Sorting } from "./TopBar";
@@ -42,8 +43,17 @@ const addUser = (selectUser, handleError) => (user: string) => {
 
 const UserList = ({ sorting, search, selectUser }) => {
   const { users } = useContext(UsersContext);
+  const barcodeSuccess = (s: string) => {
+    if (s.startsWith("<u>")) {
+      const result = users.find((u) => u.name === s.substring(3));
+      if (result != null) {
+        selectUser(result);
+      }
+    }
+  };
   return (
     <div style={{ textAlign: "center" }}>
+      <BarcodeScanner onSuccess={barcodeSuccess} />
       {users.sort(sortUser(sorting)).filter(filterUser(search)).map((u) =>
         <SelectUser user={u} key={u.name} onClick={selectUser} />
       )}

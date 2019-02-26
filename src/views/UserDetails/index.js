@@ -22,13 +22,15 @@ type Props = {
   openSettings: (user: User) => void
 };
 
-const ChangeCreditPanels = React.memo(({ addCredit }) => {
+const ChangeCreditPanels = React.memo(({ addCredit, backToList }) => {
   const products = useContext(ProductsContext);
   const categories = [...new Set(products.map((obj) => obj.category))];
   const scannerSuccess = (msg: string) => {
     const product = products.find((prod) => prod.ean.split("|").includes(msg));
     if (product != null) {
       addCredit(product)();
+    } else if (msg === "back") {
+      backToList();
     }
   };
   const filterProducts = (cat) => products.filter((p) => p.category === cat);
@@ -91,7 +93,8 @@ const UserDetails = (props: Props) => {
           <Grid item xs={12} md={3} style={{ paddingRight: 10 }}>
             <AsidePanel user={user} transactions={"disabled"} />
           </Grid>
-          <ChangeCreditPanels addCredit={addCredit} />
+          <ChangeCreditPanels addCredit={addCredit}
+            backToList={props.backToList} />
         </Grid>
       </Main>
       <Snackbar
