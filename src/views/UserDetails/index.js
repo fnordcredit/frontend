@@ -15,6 +15,7 @@ import TopBar from "components/TopBar";
 import Main from "components/Main";
 import ProductsContext from "contexts/Products";
 import useErrorHandler from "contexts/Error";
+import makeStyles from "@material-ui/styles/makeStyles";
 
 type Props = {
   user: User,
@@ -50,7 +51,20 @@ const ChangeCreditPanels = React.memo(({ addCredit, backToList }) => {
   );
 });
 
+const useStyles = makeStyles((theme) => ({
+  aside: {
+    marginBottom: theme.spacing.unit * 2,
+    [theme.breakpoints.down("sm")]: {
+      paddingRight: 0
+    },
+    [theme.breakpoints.up("md")]: {
+      paddingRight: theme.spacing.unit * 2
+    }
+  }
+}));
+
 const UserDetails = (props: Props) => {
+  const classes = useStyles();
   const isIdle = useIdle(30e3);
   if (isIdle) {
     props.backToList();
@@ -90,7 +104,7 @@ const UserDetails = (props: Props) => {
       fabIcon={<SettingsIcon />} fabAction={openSettings} />
       <Main>
         <Grid container justify="center">
-          <Grid item xs={12} md={3} style={{ paddingRight: 10 }}>
+          <Grid item xs={12} md={3} className={classes.aside}>
             <AsidePanel user={user} transactions={"disabled"} />
           </Grid>
           <ChangeCreditPanels addCredit={addCredit}
