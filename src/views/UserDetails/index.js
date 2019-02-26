@@ -4,7 +4,6 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Snackbar from "@material-ui/core/Snackbar";
 import KeyboardBackspace from "@material-ui/icons/KeyboardBackspace";
-import SettingsIcon from "@material-ui/icons/Settings";
 import { useIdle } from "react-use";
 import API from "API";
 import AsidePanel from "./AsidePanel";
@@ -101,7 +100,7 @@ const UserDetails = (props: Props) => {
           <KeyboardBackspace /> Back
         </Button>
       } title={`User: ${props.user.name}`}
-      fabIcon={<SettingsIcon />} fabAction={openSettings} />
+      fabAction={openSettings} />
       <Main>
         <Grid container justify="center">
           <Grid item xs={12} md={3} className={classes.aside}>
