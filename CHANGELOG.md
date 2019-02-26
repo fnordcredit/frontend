@@ -2,7 +2,7 @@
 
 ## v2.1.0
 
-### Features
+#### Features
 
 * New design following the material design guidelines
 * Added an idle timeout that throws you back to the User List
@@ -10,16 +10,22 @@
 * Added a loading animation to the user list
 * Extended Barcode support allowing user barcodes and a "back" barcode to get back into the user list
 
-### Minor Changes
+#### Minor Changes
 
 * Updated dependencies
 * When adding a new user an auto focus will be put on the user name textfield
 * Unified all error dialogs
 
-### Bug Fixes
+#### Bug Fixes
 
 * Fixed the error dialog when going below the debt limit ([#3](https://github.com/fnordcredit/frontend/issues/3))
 * Fixed the margins of the user details view, especially on mobile devices ([#25](https://github.com/fnordcredit/frontend/issues/25))
+
+### v2.1.1
+
+#### Bug Fixes
+
+* Removed the user barcode prefix because < and > work differently on different machines
 
 ## v2.0.0
 
