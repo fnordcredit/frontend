@@ -1,6 +1,6 @@
 {
   "name": "fnordcredit-frontend",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "author": "uwap <me@uwap.name>",
   "description": "A new frontend for fnordcredit written in React",
   "scripts": {
