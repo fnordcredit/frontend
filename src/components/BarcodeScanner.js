@@ -44,7 +44,9 @@ export default class BarcodeScanner extends React.Component<Props, State> {
       this.props.onSuccess(this.state.scannedString);
       this.setState({mode: "off", scannedString: ""});
     } else if (this.state.mode === "on") {
-      this.setState({scannedString: this.state.scannedString + e.key});
+      if (e.key.toLowerCase() !== "shift") {
+        this.setState({scannedString: this.state.scannedString + e.key});
+      }
     }
     if (this.state.scannedString.length > 100) {
       this.setState({scannedString: ""});

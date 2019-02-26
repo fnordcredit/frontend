@@ -27,6 +27,12 @@
 
 * Removed the user barcode prefix because < and > work differently on different machines
 
+### v2.1.2
+
+#### Bug Fixes
+
+* Make user barcodes case insensitive
+
 ## v2.0.0
 
 ### Features

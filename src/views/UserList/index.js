@@ -44,7 +44,7 @@ const addUser = (selectUser, handleError) => (user: string) => {
 const UserList = ({ sorting, search, selectUser }) => {
   const { users } = useContext(UsersContext);
   const barcodeSuccess = (s: string) => {
-    const result = users.find((u) => u.name === s);
+    const result = users.find((u) => u.name.toLowerCase() === s.toLowerCase());
     if (result != null) {
       selectUser(result);
     }
