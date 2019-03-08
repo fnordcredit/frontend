@@ -22,7 +22,7 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.(woff2?|eot|ttf|svg|ico)$/, loader: "file-loader" },
+      { test: /\.(woff2?|eot|ttf|svg|ico|mp3)$/, loader: "file-loader" },
       { test: /\.css$/, loader: "style-loader!css-loader" },
       { test: /\.js(x)?$/, exclude: /node_modules/, loader: "babel-loader" }
     ]
@@ -32,7 +32,7 @@ module.exports = {
     new WebpackShellPlugin({onBuildStart:preBuildScripts}),
     new HtmlWebpackPlugin({
       title: 'Fnordcredit',
-      favicon: 'icons/favicon.ico',
+      favicon: 'src/data/favicon.ico',
       template: 'index.ejs'
     }),
   ],
