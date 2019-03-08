@@ -28,7 +28,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(["dist"]),
+    new CleanWebpackPlugin(),
     new WebpackShellPlugin({onBuildStart:preBuildScripts}),
     new HtmlWebpackPlugin({
       title: 'Fnordcredit',
