@@ -2,12 +2,17 @@
 import React, { useEffect, useState } from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import ListItemText from "@material-ui/core/ListItemText";
 import Currency from "components/Currency";
 import { DateTime } from "luxon";
 import Paper from "@material-ui/core/Paper";
 import API from "API";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import Typography from "@material-ui/core/Typography";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import makeStyles from "@material-ui/styles/makeStyles";
 
 type AsidePanelProps = {
   user: User
@@ -75,25 +80,39 @@ const TransactionDetails = React.memo(({ user }) => {
   }
 });
 
-const AsidePanel = React.memo<AsidePanelProps>(({ user }: AsidePanelProps) => (
-  <React.Fragment>
-    <Paper style={{ marginBottom: 20 }} key="credit">
-      <List>
-        <ListItem>
-          <ListItemText
-            primary={<Currency amount={user.credit}
-              fmt="normal" color="negOnly" />}
-            secondary="Current Credit" />
-        </ListItem>
-      </List>
-    </Paper>
-    <Paper key="transactions">
-      <List>
-        <ListSubheader>Last Transactions</ListSubheader>
-        <TransactionDetails user={user} />
-      </List>
-    </Paper>
-  </React.Fragment>
-));
+const useStyles = makeStyles((theme) => ({
+  transactions: {
+    padding: `${theme.spacing.unit}px 0`
+  }
+}));
+
+const AsidePanel = React.memo<AsidePanelProps>(({ user }: AsidePanelProps) => {
+  const classes = useStyles();
+  return (
+    <React.Fragment>
+      <Paper style={{ marginBottom: 20 }} key="credit">
+        <List>
+          <ListItem>
+            <ListItemText
+              primary={<Currency amount={user.credit}
+                fmt="normal" color="negOnly" />}
+              secondary="Current Credit" />
+          </ListItem>
+        </List>
+      </Paper>
+      <ExpansionPanel defaultExpanded key="transactions">
+        <ExpansionPanelSummary expandIcon={<ExpandMore />}>
+          <Typography>Last Transactions</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails
+          classes={{ root: classes.transactions }}>
+          <List>
+            <TransactionDetails user={user} />
+          </List>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+    </React.Fragment>
+  );
+});
 
 export default AsidePanel;

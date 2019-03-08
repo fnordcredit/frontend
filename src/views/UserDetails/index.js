@@ -77,6 +77,7 @@ const UserDetails = (props: Props) => {
   const handleError = useErrorHandler();
   const [audio, _audioState, audioControls] = useAudio({ src: kaChing });
   const kaching = () => {
+    // reset back to 0 for when two transactions are too close after each other
     audioControls.seek(0);
     audioControls.play();
   };

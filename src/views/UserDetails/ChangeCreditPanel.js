@@ -50,7 +50,7 @@ export default class ChangeCreditPanel<T:number | Product>
         <ExpansionPanelSummary expandIcon={<ExpandMore />}>
           <Typography>{this.props.category}</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails style={{ display: "block" }}>
+        <ExpansionPanelDetails>
           {this.props.products.map(this.renderButton.bind(this))}
         </ExpansionPanelDetails>
       </ExpansionPanel>
