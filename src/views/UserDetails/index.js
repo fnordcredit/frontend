@@ -6,7 +6,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import KeyboardBackspace from "@material-ui/icons/KeyboardBackspace";
 import { useIdle, useAudio } from "react-use";
 // $FlowFixMe
-import ka_ching from "data/ka-ching.mp3";
+import kaChing from "data/ka-ching.mp3";
 import API from "API";
 import AsidePanel from "./AsidePanel";
 import ChangeCreditPanel from "./ChangeCreditPanel";
@@ -75,7 +75,7 @@ const UserDetails = (props: Props) => {
   const [snackbarMsg, setSnackbarMsg] = useState("");
   const closeSnackbar = () => setSnackbarMsg("");
   const handleError = useErrorHandler();
-  const [audio, _audioState, audioControls] = useAudio({ src: ka_ching });
+  const [audio, _audioState, audioControls] = useAudio({ src: kaChing });
   const kaching = () => {
     audioControls.seek(0);
     audioControls.play();
