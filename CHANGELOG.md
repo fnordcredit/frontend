@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.2.0
+
+### Features
+
+* Added an overview graph that shows your credit of the last 30 days
+* Added a ka-ching sounds when a transaction is made
+
 ## v2.1.0
 
 #### Features

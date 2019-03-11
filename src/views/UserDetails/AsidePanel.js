@@ -13,6 +13,7 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import makeStyles from "@material-ui/styles/makeStyles";
+import TransactionChart from "./TransactionChart";
 
 type AsidePanelProps = {
   user: User
@@ -35,8 +36,7 @@ const useTransactions = (user: User, limit: number = 5): Transactions => {
     ? transactions : transactions.slice(0, limit);
 };
 
-const TransactionDetails = React.memo(({ user }) => {
-  const transactions = useTransactions(user);
+const TransactionDetails = React.memo(({ transactions }) => {
   if (transactions === "loading") {
     return (
       <ListItem>
@@ -86,8 +86,36 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const AsidePanel = React.memo<AsidePanelProps>(({ user }: AsidePanelProps) => {
+const TransactionsSidePanel = React.memo(({ user }) => {
   const classes = useStyles();
+  const transactions = useTransactions(user);
+  const chart = typeof transactions === typeof "string" || (
+    <Paper key="chart">
+      <TransactionChart
+        // $FlowFixMe
+        transactions={transactions}
+        currentCredit={user.credit} />
+    </Paper>
+  );
+  return (
+    <React.Fragment>
+      <ExpansionPanel defaultExpanded key="transactions">
+        <ExpansionPanelSummary expandIcon={<ExpandMore />}>
+          <Typography>Last Transactions</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails
+          classes={{ root: classes.transactions }}>
+          <List>
+            <TransactionDetails transactions={transactions} />
+          </List>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+      {chart}
+    </React.Fragment>
+  );
+});
+
+const AsidePanel = React.memo<AsidePanelProps>(({ user }: AsidePanelProps) => {
   return (
     <React.Fragment>
       <Paper style={{ marginBottom: 20 }} key="credit">
@@ -100,17 +128,7 @@ const AsidePanel = React.memo<AsidePanelProps>(({ user }: AsidePanelProps) => {
           </ListItem>
         </List>
       </Paper>
-      <ExpansionPanel defaultExpanded key="transactions">
-        <ExpansionPanelSummary expandIcon={<ExpandMore />}>
-          <Typography>Last Transactions</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails
-          classes={{ root: classes.transactions }}>
-          <List>
-            <TransactionDetails user={user} />
-          </List>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+      <TransactionsSidePanel user={user} />
     </React.Fragment>
   );
 });
