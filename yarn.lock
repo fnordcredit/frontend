@@ -853,7 +853,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.8.2":
+"@types/react@*":
   version "16.8.2"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.2.tgz#3b7a7f7ea89d1c7d68b00849fb5de839011c077b"
   integrity sha512-6mcKsqlqkN9xADrwiUz2gm9Wg4iGnlVGciwBRYFQSMWG6MQjhOZ/AVnxn+6v8nslFgfYTV8fNdE6XwKu6va5PA==
@@ -1482,11 +1482,6 @@ cache-base@^1.0.1:
     to-object-path "^0.3.0"
     union-value "^1.0.0"
     unset-value "^1.0.0"
-
-callbag-subscribe@^1.4.1:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/callbag-subscribe/-/callbag-subscribe-1.5.0.tgz#dadc848ab102db7831a333d6a218dab077ab6cc2"
-  integrity sha512-nlojg2L0AX4MI3IBxUMBE9OyrfBGFvCqeiapDCXLwl2sory1/Z0HWNQnGR/9Gd7EcpRbyRWTrLVB53lW6EjAdA==
 
 caller-callsite@^2.0.0:
   version "2.0.0"
@@ -3642,11 +3637,6 @@ jsx-ast-utils@^2.0.1:
   dependencies:
     array-includes "^3.0.3"
 
-keyboardjs@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/keyboardjs/-/keyboardjs-2.5.1.tgz#2eb5d96bd1028e07136cd71919f607579edca716"
-  integrity sha512-mRf7MQMiFcudADEpPn3vTtl/rtFELo5MAiKA6yH4ShsFsnwwjMrVfaNt6bpYhBDeODs/T5NXwltz4+ktRQyP7A==
-
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
@@ -3992,10 +3982,10 @@ nan@^2.9.2:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.11.0.tgz#574e360e4d954ab16966ec102c0c049fd961a099"
 
-nano-css@^3.4.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/nano-css/-/nano-css-3.5.0.tgz#2406956def55ead602f88ee64b5caf3e7ab1e14d"
-  integrity sha512-PygEOJFZyjlrrjb8uTAxnRSveJH8byZEQfJDPMhEhijPJGfUeBHCFK5pEIN/JsCwqOxl94y/fw0d9k0Yoc6fyg==
+nano-css@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/nano-css/-/nano-css-5.1.0.tgz#03c2b4ea2edefd445ac0c0e0f2565ea62e2aa81a"
+  integrity sha512-08F1rBmp0JuAteOR/uk/c40q/+UxWr224m/ZCHjjgy8dhkFQptvNwj/408KYQc13PIV9aGvqmtUD49PqBB5Ppg==
   dependencies:
     css-tree "^1.0.0-alpha.28"
     csstype "^2.5.5"
@@ -4747,20 +4737,15 @@ react-transition-group@^2.2.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react-use@^5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/react-use/-/react-use-5.3.0.tgz#2a3da301082dfba2822f2e4d8369974aa7e15f27"
-  integrity sha512-gF5gGQyHIKpHmyIoEPzq1oCgf8p1l0AS3RBsGeLcVUJXZmatQsYwhjv1190CwNpmjxIQsrMCBakycZxoy9tXcA==
+react-use@^6.0.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-use/-/react-use-6.1.0.tgz#e239c73e37ce8b00029fa00fa7c9b45ec0264e14"
+  integrity sha512-ySiaUmiStac48j38r8Tc7PtpxU+1rLMSmnB3DW1yaD2iks3s3mYFED3hZzql+0pBoSV5DB/ysEmwD3wPy4JQpw==
   dependencies:
-    "@types/react" "^16.8.2"
-    keyboardjs "^2.5.1"
-    nano-css "^3.4.0"
+    nano-css "^5.1.0"
     react-wait "^0.3.0"
-    rebound "^0.1.0"
     throttle-debounce "^2.0.1"
-    ts-easing "^0.1.0"
-    use-callbag "^0.1.2"
-    use-onclickoutside "^0.1.0"
+    ts-easing "^0.2.0"
 
 react-wait@^0.3.0:
   version "0.3.0"
@@ -4843,11 +4828,6 @@ readdirp@^2.0.0:
     minimatch "^3.0.2"
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
-
-rebound@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/rebound/-/rebound-0.1.0.tgz#0638c61a93666bb515a58a03e1cfb34021e88b72"
-  integrity sha1-BjjGGpNma7UVpYoD4c+zQCHoi3I=
 
 "recompose@0.28.0 - 0.30.0":
   version "0.30.0"
@@ -5648,10 +5628,10 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
-ts-easing@^0.1.0:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/ts-easing/-/ts-easing-0.1.1.tgz#055c68ba878ddb78d7b22ce4852557b8b8366bcd"
-  integrity sha512-0ak4XidpHPzrGFShdgKWY70EyShH/jKUARsJD7GjmQDmHVWxnuIzhN+B2aCqB/0lp/QGSbuk1rOXxQasRc5yiA==
+ts-easing@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/ts-easing/-/ts-easing-0.2.0.tgz#c8a8a35025105566588d87dbda05dd7fbfa5a4ec"
+  integrity sha512-Z86EW+fFFh/IFB1fqQ3/+7Zpf9t2ebOAxNI/V6Wo7r5gqiqtxmgTlQ1qbqQcjLKYeSHPTsEmvlJUDg/EuL0uHQ==
 
 tslib@^1.9.0:
   version "1.9.3"
@@ -5798,18 +5778,6 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
-
-use-callbag@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/use-callbag/-/use-callbag-0.1.2.tgz#8f214952ccc488159b185ffe7ff17fccba7a73d3"
-  integrity sha512-8JJIpoqQaqJu9nfSTYe4WpJm2NyfHYgIDjouxhu4WOpgYI8W9IvMM32ecfcdZTzkWDuZkEyh3unGLMxA4wF7Bg==
-  dependencies:
-    callbag-subscribe "^1.4.1"
-
-use-onclickoutside@^0.1.0:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/use-onclickoutside/-/use-onclickoutside-0.1.1.tgz#14327d6062639541374cb48db02cac3ebe7836ac"
-  integrity sha512-IcQzKjG9OAlMQBGmUZ/3pU6DUuynPb6KlZaGNOFdmJ0FaV1yhJLauvvPcTerWAuH84K/cbkOLyAgncY+oTLtcg==
 
 use@^3.1.0:
   version "3.1.1"
