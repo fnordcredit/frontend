@@ -17,6 +17,8 @@ import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import Divider from "@material-ui/core/Divider";
 import makeStyles from "@material-ui/styles/makeStyles";
+import UserSettingsPanel from "./Panels/UserSettingsPanel";
+import useSettingsState from "./useSettingsState";
 
 export type Props = {
   onClose: (u: User) => void,
@@ -87,7 +89,8 @@ const MobileNavigation = React.memo(
 const useNavigationStyles = makeStyles({
   paper: {
     marginTop: 64,
-    zIndex: 0
+    zIndex: 0,
+    width: 212
   }
 });
 
@@ -104,32 +107,61 @@ const DesktopNavigation = React.memo(() => {
   );
 });
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   disabled: {
     background: "#444444 !important"
+  },
+  mainContainer: {
+    marginTop: 64 + theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: theme.spacing.unit * 2
+    },
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: 212 + theme.spacing.unit * 2
+    }
   }
-});
+}));
 
-const UserSettings = (props: Props) => {
+const UserSettings = React.memo<Props>((props: Props) => {
+  const [user, setUser] = useState(props.user);
   const [menuOpen, setMenuOpen] = useState(false);
   const handleOpenMenu = () => setMenuOpen(true);
   const handleCloseMenu = () => setMenuOpen(false);
-  const handleClose = () => props.onClose(props.user);
+  const handleClose = () => props.onClose(user);
+  const { handleSave, handleNameChange, changed } = useSettingsState({
+    name: user.name,
+    changed: false
+  }, (u) => {
+    setUser(u);
+  });
+  const handleSaveClick = () => {
+    handleSave(user);
+  };
   const classes = useStyles();
   return (
     <React.Fragment>
       <TopBar
         leftNode={<TopBarButton handleOpenMenu={handleOpenMenu}
           handleCloseSettings={handleClose} />
-        } title={`Settings: ${props.user.name}`}
+        } title={`Settings: ${user.name}`}
         fabIcon={<SaveIcon />}
-        fabProps={{disabled: true, classes: classes}}
+        fabProps={{
+          disabled: !changed,
+          classes: { disabled: classes.disabled },
+          onClick: handleSaveClick
+        }}
       />
       <MobileNavigation handleCloseMenu={handleCloseMenu}
         handleClose={handleClose} menuOpen={menuOpen} />
       <DesktopNavigation />
+      <main className={classes.mainContainer}>
+        <UserSettingsPanel user={user}
+          handleNameChange={handleNameChange} />
+      </main>
     </React.Fragment>
   );
-};
+});
 
 export default UserSettings;

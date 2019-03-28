@@ -1,5 +1,6 @@
 // @flow
 import React, { useState, useContext } from "react";
+import SettingsIcon from "@material-ui/icons/Settings";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -110,7 +111,8 @@ const UserDetails = (props: Props) => {
           <KeyboardBackspace /> Back
         </Button>
       } title={`User: ${props.user.name}`}
-      fabAction={openSettings} />
+      fabAction={openSettings}
+      fabIcon={<SettingsIcon />} />
       <Main>
         <Grid container justify="center">
           <Grid item xs={12} md={3} className={classes.aside}>

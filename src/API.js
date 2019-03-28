@@ -32,5 +32,11 @@ export default {
   ),
   getTransactions: <T> (user: User): AxiosPromise<T> => (
     axios.get(`/transactions/${user.id}`)
+  ),
+  renameUser: <T> (user: User, name: string, pin?: string): AxiosPromise<T> => (
+    axios.post("/user/rename", {
+      id: user.id,
+      newname: name
+    }, { headers: { "x-user-pincode": pin == null ? "null" : pin }})
   )
 };
