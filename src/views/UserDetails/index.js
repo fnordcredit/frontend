@@ -43,7 +43,7 @@ const ChangeCreditPanels = React.memo(({ addCredit, backToList }) => {
       <ChangeCreditPanel products={[0.5, 1, 2, 5, 10]}
         category="Add Credit" addCredit={addCredit} />
       { categories.map((cat) => (
-        <ChangeCreditPanel
+        <ChangeCreditPanel // $FlowFixMe
           products={filterProducts(cat)}
           category={cat} key={cat} addCredit={addCredit} />
       ))}

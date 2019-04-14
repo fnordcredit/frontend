@@ -14,46 +14,37 @@ type Props<T> = {
   addCredit: (product: T) => () => void
 };
 
-export default class ChangeCreditPanel<T:number | Product>
-  extends React.Component<Props<T>> {
+type Val = Product | number;
 
-  constructor(props: Props<T>) {
-    super(props);
-  }
-
-  renderButton(product: T) {
+const ChangeCreditPanel = React.memo<Props<Val>>((props: Props<Val>) => {
+  const renderButton = (product: Val) => {
     const amount = typeof product !== "number" ? -product.price : product;
     const key = typeof product !== "number" ? product.id : product;
     const extraText = typeof product !== "number" ? ` ${product.name}` : "";
     return (
-      <LargeButton variant="raised" color="primary"
-        onClick={this.props.addCredit(product)} key={key}>
-        {typeof product !== "number" && product.imagePath !== ""
-          ? <img src={product.imagePath}
-            style={{
-              width: 45,
-              float: "left",
-              marginTop: -5,
-              marginLeft: -10
-            }} /> : null}
-        <div style={{ marginTop: 5 }}>
-          <Currency amount={amount} fmt="diff" color="colorful" />
-          {extraText}
-        </div>
-      </LargeButton>
+      <LargeButton
+        onClick={props.addCredit(product)} key={key}
+        image={typeof product !== "number" && product.imagePath !== ""
+          ? product.imagePath : null}
+        caption={
+          <div style={{ marginTop: 5 }}>
+            <Currency amount={amount} fmt="diff" color="colorful" />
+            {extraText}
+          </div>
+        } />
     );
-  }
+  };
 
-  render() {
-    return (
-      <ExpansionPanel defaultExpanded>
-        <ExpansionPanelSummary expandIcon={<ExpandMore />}>
-          <Typography>{this.props.category}</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          {this.props.products.map(this.renderButton.bind(this))}
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    );
-  }
-}
+  return (
+    <ExpansionPanel defaultExpanded>
+      <ExpansionPanelSummary expandIcon={<ExpandMore />}>
+        <Typography>{props.category}</Typography>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails>
+        {props.products.map(renderButton)}
+      </ExpansionPanelDetails>
+    </ExpansionPanel>
+  );
+});
+
+export default ChangeCreditPanel;
