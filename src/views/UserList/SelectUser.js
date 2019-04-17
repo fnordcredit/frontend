@@ -9,20 +9,24 @@ type Props = {
   onClick: (u: User) => void
 };
 
-const useStyles = makeStyles((theme) => ({
-  amount: {
-    padding: theme.spacing.unit * 2
+const useStyles = makeStyles({
+  amountNoImage: {
+    marginTop: 20
   }
-}));
+});
 
 const SelectUser = React.memo<Props>((props: Props) => {
   const classes = useStyles();
   const handleClick = () => props.onClick(props.user);
+  const avatar = null; // TODO: Change once avatars are implemented
+  const currencyClasses = avatar == null ? {}
+    : { classes: { root: classes.amountNoImage } };
   return (
-    <LargeButton onClick={handleClick} caption={props.user.name}>
+    <LargeButton onClick={handleClick} caption={props.user.name}
+      image={avatar}>
       <Currency amount={props.user.credit}
         color="negOnly"
-        extraProps={{ align: "center", className: classes.amount }}
+        extraProps={Object.assign({}, currencyClasses, { align: "center" })}
       />
     </LargeButton>
   );

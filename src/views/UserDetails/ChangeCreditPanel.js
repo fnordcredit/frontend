@@ -27,10 +27,10 @@ const ChangeCreditPanel = React.memo<Props<Val>>((props: Props<Val>) => {
         image={typeof product !== "number" && product.imagePath !== ""
           ? product.imagePath : null}
         caption={
-          <div style={{ marginTop: 5 }}>
-            <Currency amount={amount} fmt="diff" color="colorful" />
+          <React.Fragment>
             {extraText}
-          </div>
+            <Currency amount={amount} fmt="diff" color="colorful" />
+          </React.Fragment>
         } />
     );
   };

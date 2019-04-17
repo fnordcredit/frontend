@@ -23,18 +23,29 @@ const useStyles = makeStyles((theme) => ({
     padding: 0
   },
   caption: {
-    marginTop: theme.spacing.unit * 5.5,
-    padding: theme.spacing.unit,
     overflowWrap: "break-word"
+  },
+  captionNoImage: {
+    marginTop: theme.spacing.unit * 5.5
+  },
+  image: {
+    borderRadius: 5,
+    height: 88
   }
 }));
 
 const LargeButton = React.memo<Props>((props: Props) => {
   const classes = useStyles();
+  const captionClasses = props.image != null ? classes.caption
+    : `${classes.caption} ${classes.captionNoImage}`;
   return (
     <Button classes={{ root: classes.root }} onClick={props.onClick}
       variant="contained" color="primary" {...props.extraProps || {}}>
-      <Typography align="center" variant="h6" className={classes.caption}>
+      { props.image != null &&
+        <img src={props.image} className={classes.image} /> }
+      <Typography align="center"
+        variant={props.image != null ? "subtitle2" : "h6"}
+        className={captionClasses}>
         {props.caption}
       </Typography>
       {props.children || null}
