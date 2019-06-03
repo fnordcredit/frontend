@@ -19,7 +19,7 @@ const SelectUser = React.memo<Props>((props: Props) => {
   const classes = useStyles();
   const handleClick = () => props.onClick(props.user);
   const avatar = null; // TODO: Change once avatars are implemented
-  const currencyClasses = avatar == null ? {}
+  const currencyClasses = avatar != null ? {}
     : { classes: { root: classes.amountNoImage } };
   return (
     <LargeButton onClick={handleClick} caption={props.user.name}

@@ -44,7 +44,7 @@
     "react": "^16.8.0",
     "react-chartjs-2": "^2.7.4",
     "react-dom": "^16.8.0",
-    "react-use": "^5.3.0",
+    "react-use": "^9.0.0",
     "style-loader": "^0.23.1",
     "typeface-roboto": "^0.0.54",
     "webpack": "^4.28.4",

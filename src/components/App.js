@@ -8,23 +8,24 @@ import UserSettings from "views/UserSettings";
 import fnordCreditTheme from "colors";
 import { ProductLoader } from "contexts/Products";
 import { ErrorHandler } from "contexts/Error";
+import { AuthHandler, useLogout } from "contexts/Auth";
 
-export type View = { type: "list" }
-  | { type: "details", user: User }
-  | { type: "settings", user: User };
-
+export type View = "list" | "details" | "settings"
 const App = React.memo(() => {
-  const [view, setView] = useState({ type: "list" });
-  const toUserList = () => setView({ type: "list" });
-  const toUserDetails = (u: User) => setView({ type: "details", user: u });
-  const toUserSettings = (u: User) => setView({ type: "settings", user: u });
-  switch (view.type) {
+  const [view, setView] = useState("list");
+  const toUserList = () => {
+    useLogout();
+    setView({ type: "list" });
+  };
+  const toUserDetails = () => setView("details");
+  const toUserSettings = () => setView("settings");
+  switch (view) {
   case "details": return (
-    <UserDetails user={view.user} backToList={toUserList}
+    <UserDetails backToList={toUserList}
       openSettings={toUserSettings} />
   );
   case "settings": return (
-    <UserSettings onClose={toUserDetails} user={view.user} />
+    <UserSettings onClose={toUserDetails} />
   );
   case "list":
   default: return (
@@ -39,7 +40,9 @@ export default function StyledApp() {
       <CssBaseline />
       <ProductLoader>
         <ErrorHandler>
-          <App />
+          <AuthHandler>
+            <App />
+          </AuthHandler>
         </ErrorHandler>
       </ProductLoader>
     </ThemeProvider>

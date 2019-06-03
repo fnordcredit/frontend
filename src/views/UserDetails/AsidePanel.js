@@ -14,16 +14,17 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import makeStyles from "@material-ui/styles/makeStyles";
 import TransactionChart from "./TransactionChart";
-
-type AsidePanelProps = {
-  user: User
-}
+import { useUser } from "contexts/Auth";
 
 type Transactions = Array<Transaction> | "loading" | "disabled" | "empty";
 
-const useTransactions = (user: User, limit: number = 5): Transactions => {
+const useTransactions = (user: ?User, limit: number = 5): Transactions => {
   const [transactions, setTransactions] = useState("loading");
   useEffect(() => {
+    if (user == null) {
+      setTransactions("loading");
+      return;
+    }
     API.getTransactions(user)
       .then((response) => setTransactions(
         response.data.length > 0
@@ -115,14 +116,15 @@ const TransactionsSidePanel = React.memo(({ user }) => {
   );
 });
 
-const AsidePanel = React.memo<AsidePanelProps>(({ user }: AsidePanelProps) => {
+const AsidePanel = React.memo<AsidePanelProps>(() => {
+  const user = useUser();
   return (
     <React.Fragment>
       <Paper style={{ marginBottom: 20 }} key="credit">
         <List>
           <ListItem>
             <ListItemText
-              primary={<Currency amount={user.credit}
+              primary={<Currency amount={user == null ? 0 : user.credit}
                 fmt="normal" color="negOnly" />}
               secondary="Current Credit" />
           </ListItem>

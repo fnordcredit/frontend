@@ -17,12 +17,12 @@ import TopBar from "components/TopBar";
 import Main from "components/Main";
 import ProductsContext from "contexts/Products";
 import useErrorHandler from "contexts/Error";
+import { useUser } from "contexts/Auth";
 import makeStyles from "@material-ui/styles/makeStyles";
 
 type Props = {
-  user: User,
   backToList: () => void,
-  openSettings: (user: User) => void
+  openSettings: () => void
 };
 
 const ChangeCreditPanels = React.memo(({ addCredit, backToList }) => {
@@ -71,8 +71,8 @@ const UserDetails = (props: Props) => {
   if (isIdle) {
     props.backToList();
   }
-  const openSettings = () => props.openSettings(props.user);
-  const [user, setUser] = useState(props.user);
+  const user = useUser();
+  const openSettings = () => props.openSettings();
   const [snackbarMsg, setSnackbarMsg] = useState("");
   const closeSnackbar = () => setSnackbarMsg("");
   const handleError = useErrorHandler();
@@ -110,13 +110,13 @@ const UserDetails = (props: Props) => {
         <Button onClick={props.backToList}>
           <KeyboardBackspace /> Back
         </Button>
-      } title={`User: ${props.user.name}`}
+      } title={`User: ${user == null ? "Loading..." : user.name}`}
       fabAction={openSettings}
       fabIcon={<SettingsIcon />} />
       <Main>
         <Grid container justify="center">
           <Grid item xs={12} md={3} className={classes.aside}>
-            <AsidePanel user={user} transactions={"disabled"} />
+            <AsidePanel />
           </Grid>
           <ChangeCreditPanels addCredit={addCredit}
             backToList={props.backToList} />
