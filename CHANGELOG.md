@@ -4,6 +4,7 @@
 
 ### Features
 
+* Added an about view, that shows the current version and links to github
 * Added a user settings screen with a variety of settings available
 * Added an overview graph that shows your credit of the last 30 days
 * Added a ka-ching sounds when a transaction is made

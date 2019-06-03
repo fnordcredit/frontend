@@ -1,5 +1,9 @@
 import { type Node } from "react";
 
+declare var VERSION: string;
+declare var COMMITHASH: string;
+declare var BRANCH: string;
+
 type Classes = { classes: Object };
 type Children = { children: Node };
 

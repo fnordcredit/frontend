@@ -20,7 +20,10 @@ module.exports = {
     "react", "flowtype", "fp"
   ],
   "globals": {
-    "require": false
+    "require": false,
+    "VERSION": true,
+    "COMMITHASH": true,
+    "BRANCH": true
   },
   "rules": {
     // possible errors

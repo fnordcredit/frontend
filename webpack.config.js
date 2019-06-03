@@ -3,6 +3,8 @@ const webpack = require('webpack');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const GitRevisionPlugin = require('git-revision-webpack-plugin');
+const gitRevisionPlugin = new GitRevisionPlugin();
 
 const preBuildScripts = process.env.NO_FLOW == undefined ?
   process.env.FLOW_PATH != undefined ? [process.env.FLOW_PATH] : ['flow']
@@ -35,6 +37,11 @@ module.exports = {
       favicon: 'src/data/favicon.ico',
       template: 'index.ejs'
     }),
+    new webpack.DefinePlugin({
+      'VERSION': JSON.stringify(gitRevisionPlugin.version()),
+      'COMMITHASH': JSON.stringify(gitRevisionPlugin.commithash()),
+      'BRANCH': JSON.stringify(gitRevisionPlugin.branch()),
+    })
   ],
   devtool: 'source-map'
 };
