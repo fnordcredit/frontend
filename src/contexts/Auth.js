@@ -54,6 +54,8 @@ export const AuthHandler = ({ children }: { children: Node }) => {
   );
 };
 
+// export const useSetUserUnsafe for API.js
+
 export const useAuth = (userId: string) => {
   const { auth, reqAuth } = useContext(Context);
   reqAuth(userId);

@@ -95,7 +95,7 @@ const TransactionsSidePanel = React.memo(({ user }) => {
       <TransactionChart
         // $FlowFixMe
         transactions={transactions}
-        currentCredit={user.credit} />
+        currentCredit={user == null ? 0 : user.credit} />
     </Paper>
   );
   return (
@@ -116,7 +116,7 @@ const TransactionsSidePanel = React.memo(({ user }) => {
   );
 });
 
-const AsidePanel = React.memo<AsidePanelProps>(() => {
+const AsidePanel = React.memo<{}>(() => {
   const user = useUser();
   return (
     <React.Fragment>

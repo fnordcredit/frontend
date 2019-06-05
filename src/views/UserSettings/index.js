@@ -19,10 +19,10 @@ import Divider from "@material-ui/core/Divider";
 import makeStyles from "@material-ui/styles/makeStyles";
 import UserSettingsPanel from "./Panels/UserSettingsPanel";
 import useSettingsState from "./useSettingsState";
+import { useUser } from "contexts/Auth";
 
 export type Props = {
-  onClose: (u: User) => void,
-  user: User
+  onClose: () => void
 }
 
 const TopBarButton = React.memo(({handleOpenMenu, handleCloseSettings}) => (
@@ -125,11 +125,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UserSettings = React.memo<Props>((props: Props) => {
-  const [user, setUser] = useState(props.user);
+  const user = useUser();
   const [menuOpen, setMenuOpen] = useState(false);
   const handleOpenMenu = () => setMenuOpen(true);
   const handleCloseMenu = () => setMenuOpen(false);
-  const handleClose = () => props.onClose(user);
+  const handleClose = () => props.onClose();
   const { handleSave, handleNameChange, changed } = useSettingsState({
     name: user.name,
     changed: false

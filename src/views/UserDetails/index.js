@@ -25,6 +25,8 @@ type Props = {
   openSettings: () => void
 };
 
+type InternalProps = Props & { user: User };
+
 const ChangeCreditPanels = React.memo(({ addCredit, backToList }) => {
   const products = useContext(ProductsContext);
   const categories = [...new Set(products.map((obj) => obj.category))];
@@ -65,13 +67,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const UserDetails = (props: Props) => {
+const UserDetails = React.memo<InternalProps>((props: InternalProps) => {
   const classes = useStyles();
   const isIdle = useIdle(30e3);
   if (isIdle) {
     props.backToList();
   }
-  const user = useUser();
+  const user = props.user;
   const openSettings = () => props.openSettings();
   const [snackbarMsg, setSnackbarMsg] = useState("");
   const closeSnackbar = () => setSnackbarMsg("");
@@ -133,6 +135,13 @@ const UserDetails = (props: Props) => {
       />
     </React.Fragment>
   );
-};
+});
 
-export default UserDetails;
+export default React.memo<Props>((props: Props) => {
+  const user = useUser();
+  if (user == null) {
+    props.backToList();
+    return null;
+  }
+  return <UserDetails {...props} user={user} />
+});
