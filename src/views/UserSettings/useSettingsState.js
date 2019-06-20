@@ -8,7 +8,7 @@ export type Settings = {
   changed: boolean
 };
 
-export type OnSave = (user: User) => void;
+export type OnSave = () => void;
 
 const apiReqRename = async (initialState, state, user) => {
   if (initialState.name === state.name) {
@@ -19,7 +19,7 @@ const apiReqRename = async (initialState, state, user) => {
 };
 
 
-const useSettingsState = (initialState: Settings, onSave: OnSave) => {
+const useSettingsState = (initialState: Settings, onSave: OnSave = ()=>{}) => {
   const [state, setState] = useSetState(initialState);
   const handleError = useErrorHandler();
   const handleNameChange = (name: string) => {
@@ -29,8 +29,9 @@ const useSettingsState = (initialState: Settings, onSave: OnSave) => {
     apiReqRename(initialState, state, user)
       .then((u) => {
         if (u != null) {
-          onSave(u);
+          // TODO: Set new u
         }
+        onSave();
       }).catch(handleError);
   };
   return {

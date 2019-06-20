@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import { withUser } from "contexts/Auth";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -24,11 +25,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export type Props = {
-  user: User,
   handleNameChange: (name: string) => void
-}
+};
 
-const UserSettingsPanel = React.memo<Props>(({user, handleNameChange}) => {
+type UProps = {
+  user: User
+} & Props;
+
+const UserSettingsPanel = React.memo<UProps>(({user, handleNameChange}) => {
   const classes = useStyles();
   const handleEvNameChange = (event) => handleNameChange(event.target.value);
   const pinProtection = false;
@@ -67,4 +71,4 @@ const UserSettingsPanel = React.memo<Props>(({user, handleNameChange}) => {
   );
 });
 
-export default UserSettingsPanel;
+export default withUser<Props>(UserSettingsPanel);

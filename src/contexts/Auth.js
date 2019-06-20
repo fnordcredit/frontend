@@ -72,4 +72,15 @@ export const useLogout = () => {
   unAuth();
 }
 
+type Fllbck<P> = (p: P) => Node;
+export const withUser = <P> (Element: Node, fallback: Fllbck<P> = () => null) =>
+  React.memo<*>((props: P) => {
+    const user = useUser();
+    if (user == null) {
+      return fallback(props);
+    } else {
+      return <Element {...props} user={user} />
+    }
+  });
+
 export default useUser;

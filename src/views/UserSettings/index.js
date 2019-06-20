@@ -19,11 +19,15 @@ import Divider from "@material-ui/core/Divider";
 import makeStyles from "@material-ui/styles/makeStyles";
 import UserSettingsPanel from "./Panels/UserSettingsPanel";
 import useSettingsState from "./useSettingsState";
-import { useUser } from "contexts/Auth";
+import { withUser } from "contexts/Auth";
 
 export type Props = {
   onClose: () => void
 }
+
+type UProps = {
+  user: User;
+} & Props;
 
 const TopBarButton = React.memo(({handleOpenMenu, handleCloseSettings}) => (
   <React.Fragment>
@@ -124,8 +128,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const UserSettings = React.memo<Props>((props: Props) => {
-  const user = useUser();
+const UserSettings = React.memo<UProps>((props: UProps) => {
+  const user = props.user;
   const [menuOpen, setMenuOpen] = useState(false);
   const handleOpenMenu = () => setMenuOpen(true);
   const handleCloseMenu = () => setMenuOpen(false);
@@ -133,8 +137,6 @@ const UserSettings = React.memo<Props>((props: Props) => {
   const { handleSave, handleNameChange, changed } = useSettingsState({
     name: user.name,
     changed: false
-  }, (u) => {
-    setUser(u);
   });
   const handleSaveClick = () => {
     handleSave(user);
@@ -157,11 +159,13 @@ const UserSettings = React.memo<Props>((props: Props) => {
         handleClose={handleClose} menuOpen={menuOpen} />
       <DesktopNavigation />
       <main className={classes.mainContainer}>
-        <UserSettingsPanel user={user}
-          handleNameChange={handleNameChange} />
+        <UserSettingsPanel handleNameChange={handleNameChange} />
       </main>
     </React.Fragment>
   );
 });
 
-export default UserSettings;
+export default withUser(UserSettings, ({onClose}) => {
+  onClose();
+  return null;
+});

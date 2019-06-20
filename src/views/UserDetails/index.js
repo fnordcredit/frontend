@@ -17,7 +17,7 @@ import TopBar from "components/TopBar";
 import Main from "components/Main";
 import ProductsContext from "contexts/Products";
 import useErrorHandler from "contexts/Error";
-import { useUser } from "contexts/Auth";
+import { withUser } from "contexts/Auth";
 import makeStyles from "@material-ui/styles/makeStyles";
 
 type Props = {
@@ -137,11 +137,7 @@ const UserDetails = React.memo<InternalProps>((props: InternalProps) => {
   );
 });
 
-export default React.memo<Props>((props: Props) => {
-  const user = useUser();
-  if (user == null) {
-    props.backToList();
-    return null;
-  }
-  return <UserDetails {...props} user={user} />
+export default withUser(UserDetails, ({ backToList }) => {
+  backToList();
+  return null;
 });
