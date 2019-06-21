@@ -8,17 +8,23 @@ import UserSettings from "views/UserSettings";
 import fnordCreditTheme from "colors";
 import { ProductLoader } from "contexts/Products";
 import { ErrorHandler } from "contexts/Error";
-import { AuthHandler, useLogout } from "contexts/Auth";
+import { AuthHandler, useLogout, useAuth } from "contexts/Auth";
 
 export type View = "list" | "details" | "settings"
 const App = React.memo(() => {
   const [view, setView] = useState("list");
+  const authenticate = useAuth();
+  const logout = useLogout();
   const toUserList = () => {
-    useLogout();
+    logout();
     setView({ type: "list" });
   };
   const toUserDetails = () => setView("details");
   const toUserSettings = () => setView("settings");
+  const selectUser = (u: User) => {
+    authenticate(u.id);
+    toUserDetails();
+  };
   switch (view) {
   case "details": return (
     <UserDetails backToList={toUserList}
@@ -29,7 +35,7 @@ const App = React.memo(() => {
   );
   case "list":
   default: return (
-    <UserList selectUser={toUserDetails} />
+    <UserList selectUser={selectUser} />
   );
   }
 });

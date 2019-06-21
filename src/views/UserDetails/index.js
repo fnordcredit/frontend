@@ -8,7 +8,7 @@ import KeyboardBackspace from "@material-ui/icons/KeyboardBackspace";
 import { useIdle, useAudio } from "react-use";
 // $FlowFixMe
 import kaChing from "data/ka-ching.mp3";
-import API from "API";
+import { useBuyProduct, useAddCredit } from "API";
 import AsidePanel from "./AsidePanel";
 import ChangeCreditPanel from "./ChangeCreditPanel";
 import * as Cur from "components/Currency";
@@ -84,26 +84,24 @@ const UserDetails = React.memo<InternalProps>((props: InternalProps) => {
     audioControls.seek(0);
     audioControls.play();
   };
+  const apiAddCredit = useAddCredit();
+  const apiBuyProduct = useBuyProduct();
   const addCredit = (ap: Product | number) => () => {
     if (typeof ap === "number") {
       const am: number = ap;
-      API.addCredit(user, am)
-        .then((response) => {
-          setUser(response.data);
-          kaching();
-          setSnackbarMsg(am < 0
-            ? `Successfully removed ${Cur.formatString(am)} from your Account`
-            : `Successfully added ${Cur.formatString(am)} to your Account`);
-        }).catch(handleError);
+      apiAddCredit(am, () => {
+        kaching();
+        setSnackbarMsg(am < 0
+          ? `Successfully removed ${Cur.formatString(am)} from your Account`
+          : `Successfully added ${Cur.formatString(am)} to your Account`);
+      });
     } else {
       const p: Product = ap;
-      API.buyProduct(user, p)
-        .then((response) => {
-          setUser(response.data);
-          kaching();
-          setSnackbarMsg(`Successfully bought ${p.name} `
-            + `for ${Cur.formatString(p.price)}`);
-        }).catch(handleError);
+      apiBuyProduct(p, () => {
+        kaching();
+        setSnackbarMsg(`Successfully bought ${p.name} `
+          + `for ${Cur.formatString(p.price)}`);
+      });
     }
   };
   return (

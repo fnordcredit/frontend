@@ -7,19 +7,21 @@ import API from "API";
 
 export type AuthType = {
   user: ?User,
-  userId: ?string,
+  userId: ?number,
   pin: ?string
 };
 const defaultAuth = { user: null, userId: null, pin: null };
 export type ContextType = {
   auth: AuthType,
   unAuth: () => void,
-  reqAuth: (userId: string) => void
+  reqAuth: (userId: number) => void,
+  unsafeSetAuth: (auth: AuthType) => void
 };
 const Context: React$Context<ContextType> = React.createContext({
   auth: defaultAuth,
   unAuth: () => {},
-  reqAuth: () => {}
+  reqAuth: () => {},
+  unsafeSetAuth: (auth: AuthType) => {}
 });
 
 export const AuthHandler = ({ children }: { children: Node }) => {
@@ -28,7 +30,7 @@ export const AuthHandler = ({ children }: { children: Node }) => {
   useEffect(() => {
     if (state.userId != null) {
       const id = state.userId;
-      API.getUser(id, state.pin || "")
+      API.getUser({ id: id }, state.pin || "null")
       .then((response) => {
         setState({ user: response.data });
       })
@@ -36,6 +38,7 @@ export const AuthHandler = ({ children }: { children: Node }) => {
         if (error.request.status === 401) {
           setState({ user: null });
         } else {
+          console.log(`User Id: ${id}`);
           handleError(error);
         }
       });
@@ -44,22 +47,27 @@ export const AuthHandler = ({ children }: { children: Node }) => {
   const unAuth = () => {
     setState(defaultAuth);
   };
-  const reqAuth = (userId: string) => {
+  const reqAuth = (userId: number) => {
     setState({ userId: userId });
   };
+  const unsafeSetAuth = (auth: AuthType) => {
+    setState(auth);
+  };
   return (
-    <Context.Provider value={{auth: state, reqAuth: reqAuth, unAuth: unAuth}}>
+    <Context.Provider value={{
+      auth: state,
+      reqAuth: reqAuth,
+      unAuth: unAuth,
+      unsafeSetAuth: unsafeSetAuth
+    }}>
       {children}
     </Context.Provider>
   );
 };
 
-// export const useSetUserUnsafe for API.js
-
-export const useAuth = (userId: string) => {
-  const { auth, reqAuth } = useContext(Context);
-  reqAuth(userId);
-  return auth.user;
+export const useAuth = () => {
+  const { reqAuth } = useContext(Context);
+  return (userId: number) => reqAuth(userId);
 }
 
 export const useUser = () => {
@@ -69,8 +77,13 @@ export const useUser = () => {
 
 export const useLogout = () => {
   const { unAuth } = useContext(Context);
-  unAuth();
-}
+  return () => unAuth();
+};
+
+export const useUnsafeSetUser = () => (user: User) => {
+  const { auth, unsafeSetAuth } = useContext(Context);
+  unsafeSetAuth({ ...auth, user: user });
+};
 
 type Fllbck<P> = (p: P) => Node;
 export const withUser = <P> (Element: Node, fallback: Fllbck<P> = () => null) =>

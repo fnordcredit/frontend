@@ -2,8 +2,10 @@
 import axios from "axios";
 import type { AxiosPromise } from "axios";
 import * as Cur from "components/Currency";
+import useErrorHandler from "contexts/Error";
+import { useUser, useUnsafeSetUser } from "contexts/Auth";
 
-export default {
+const API = {
   addCredit: <T> (user: User, delta: number): AxiosPromise<T> => (
     axios.post("/user/credit",
       { id: user.id
@@ -26,7 +28,7 @@ export default {
   ),
   getAllUsers: <T> (): AxiosPromise<T> => axios.get("/users/all"),
   getAllProducts: <T> (): AxiosPromise<T> => axios.get("/products/all"),
-  getUser: <T> (user: User, pin?: string): AxiosPromise<T> => (
+  getUser: <T> (user: { id: number }, pin?: string): AxiosPromise<T> => (
     axios.get(`/user/${user.id}`,
       { headers: { "x-user-pincode": pin == null ? "null" : pin }})
   ),
@@ -40,3 +42,38 @@ export default {
     }, { headers: { "x-user-pincode": pin == null ? "null" : pin }})
   )
 };
+
+type VoidFn = () => void;
+const def = () => {};
+
+export const useAddCredit = () => (delta: number, onSuccess: VoidFn = def) => {
+  const user = useUser();
+  const setUser = useUnsafeSetUser();
+  const handleError = useErrorHandler();
+  if (user == null) {
+    handleError("Cannot add credit. User is null.");
+  } else {
+    API.addCredit(user, delta)
+      .then((response) => {
+        setUser(response.data);
+        onSuccess();
+      }).catch(handleError);
+  }
+};
+
+export const useBuyProduct = () => (p: Product, onSuccess: VoidFn = def) => {
+  const user = useUser();
+  const setUser = useUnsafeSetUser();
+  const handleError = useErrorHandler();
+  if (user == null) {
+    handleError("Cannot add credit. User is null.");
+  } else {
+    API.buyProduct(user, p)
+      .then((response) => {
+        setUser(response.data);
+        onSuccess();
+      }).catch(handleError);
+  }
+};
+
+export default API;
