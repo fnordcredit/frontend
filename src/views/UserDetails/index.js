@@ -4,6 +4,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Snackbar from "@material-ui/core/Snackbar";
+import Typography from "@material-ui/core/Typography";
 import KeyboardBackspace from "@material-ui/icons/KeyboardBackspace";
 import { useIdle, useAudio } from "react-use";
 // $FlowFixMe
@@ -25,7 +26,8 @@ type Props = {
   openSettings: (user: User) => void
 };
 
-const ChangeCreditPanels = React.memo(({ addCredit, backToList }) => {
+const ChangeCreditPanels = React.memo((props) => {
+  const { addCredit, backToList, onBarcodeNotFound } = props;
   const products = useContext(ProductsContext);
   const categories = [...new Set(products.map((obj) => obj.category))];
   const scannerSuccess = (msg: string) => {
@@ -34,6 +36,8 @@ const ChangeCreditPanels = React.memo(({ addCredit, backToList }) => {
       addCredit(product)();
     } else if (msg === "back") {
       backToList();
+    } else {
+      onBarcodeNotFound();
     }
   };
   const filterProducts = (cat) => products.filter((p) => p.category === cat);
@@ -73,14 +77,21 @@ const UserDetails = (props: Props) => {
   }
   const openSettings = () => props.openSettings(props.user);
   const [user, setUser] = useState(props.user);
-  const [snackbarMsg, setSnackbarMsg] = useState("");
-  const closeSnackbar = () => setSnackbarMsg("");
+  const [snackbarMsg, setSnackbarMsg] = useState(null);
+  const closeSnackbar = () => setSnackbarMsg(null);
   const handleError = useErrorHandler();
   const [audio, _audioState, audioControls] = useAudio({ src: kaChing });
   const kaching = () => {
     // reset back to 0 for when two transactions are too close after each other
     audioControls.seek(0);
     audioControls.play();
+  };
+  const handleBarcodeNotFound = () => {
+    setSnackbarMsg(
+      <Typography color="error">
+        Unknown barcode scanned. Please enter the transaction manually.
+      </Typography>
+    );
   };
   const addCredit = (ap: Product | number) => () => {
     if (typeof ap === "number") {
@@ -119,12 +130,13 @@ const UserDetails = (props: Props) => {
             <AsidePanel user={user} transactions={"disabled"} />
           </Grid>
           <ChangeCreditPanels addCredit={addCredit}
-            backToList={props.backToList} />
+            backToList={props.backToList}
+            onBarcodeNotFound={handleBarcodeNotFound} />
         </Grid>
       </Main>
       {audio}
       <Snackbar
-        open={snackbarMsg !== ""}
+        open={snackbarMsg != null}
         onClose={closeSnackbar}
         ContentProps={{
           "aria-describedby": "message-id"
