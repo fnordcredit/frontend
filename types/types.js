@@ -11,7 +11,8 @@ type User = {
   credit: number,
   id: number,
   lastchanged: number,
-  name: string
+  name: string,
+  avatar: ?string
 };
 
 type Product = {

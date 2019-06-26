@@ -26,11 +26,13 @@ const useStyles = makeStyles((theme) => ({
     overflowWrap: "break-word"
   },
   captionNoImage: {
-    marginTop: theme.spacing.unit * 5.5
+    marginTop: 18
   },
   image: {
     borderRadius: 5,
-    height: 88
+    height: 88,
+    marginTop: 2,
+    marginBottom: -4
   }
 }));
 

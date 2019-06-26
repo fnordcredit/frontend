@@ -5,6 +5,7 @@
 ### Features
 
 * Added an about view, that shows the current version and links to github
+* Added avatars
 * Added a user settings screen with a variety of settings available:
   * Renaming
 * Added a ka-ching sounds when a transaction is made
@@ -13,6 +14,7 @@
 ### Minor Changes
 
 * Made the last transactions panel collabsible for better responsibility
+* Scanning an unknown barcode now displays an error message
 
 ## v2.1.0
 
