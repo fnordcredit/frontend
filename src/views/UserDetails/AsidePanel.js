@@ -4,6 +4,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Currency from "components/Currency";
+import Avatar from "components/Avatar";
 import { DateTime } from "luxon";
 import Paper from "@material-ui/core/Paper";
 import API from "API";
@@ -121,6 +122,7 @@ const AsidePanel = React.memo<AsidePanelProps>(({ user }: AsidePanelProps) => {
       <Paper style={{ marginBottom: 20 }} key="credit">
         <List>
           <ListItem>
+            { user.avatar && <Avatar src={user.avatar} /> }
             <ListItemText
               primary={<Currency amount={user.credit}
                 fmt="normal" color="negOnly" />}

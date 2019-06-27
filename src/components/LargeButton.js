@@ -3,6 +3,7 @@ import * as React from "react";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/styles/makeStyles";
+import Avatar from "components/Avatar";
 
 type Props = {
   caption: React.Node,
@@ -27,12 +28,6 @@ const useStyles = makeStyles((theme) => ({
   },
   captionNoImage: {
     marginTop: 18
-  },
-  image: {
-    borderRadius: 5,
-    height: 88,
-    marginTop: 2,
-    marginBottom: -4
   }
 }));
 
@@ -44,7 +39,7 @@ const LargeButton = React.memo<Props>((props: Props) => {
     <Button classes={{ root: classes.root }} onClick={props.onClick}
       variant="contained" color="primary" {...props.extraProps || {}}>
       { props.image != null &&
-        <img src={props.image} className={classes.image} /> }
+        <Avatar src={props.image} /> }
       <Typography align="center"
         variant={props.image != null ? "subtitle2" : "h6"}
         className={captionClasses}>
