@@ -47,7 +47,7 @@
     "react-dom": "^16.8.0",
     "react-use": "^5.3.0",
     "style-loader": "^0.23.1",
-    "typeface-roboto": "^0.0.54",
+    "typeface-roboto": "^0.0.75",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
     "webpack-shell-plugin": "^0.5.0"
