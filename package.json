@@ -48,10 +48,10 @@
     "react-use": "^5.3.0",
     "style-loader": "^0.23.1",
     "typeface-roboto": "^0.0.54",
-    "webpack": "^4.39.2",
+    "webpack": "^4.41.0",
     "style-loader": "^1.0.0",
     "typeface-roboto": "^0.0.75",
-    "webpack": "^4.39.2",
+    "webpack": "^4.41.0",
     "webpack-cli": "^3.2.1",
     "webpack-shell-plugin": "^0.5.0"
   },
