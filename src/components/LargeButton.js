@@ -10,6 +10,7 @@ type Props = {
   children?: React.Node,
   image?: ?string,
   onClick: () => void,
+  condensed?: boolean,
   extraProps?: Object
 };
 
@@ -18,7 +19,16 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "none",
     height: 140,
     width: 200,
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
+    display: "inline-block",
+    overflow: "hidden",
+    padding: 0
+  },
+  condensed: {
+    textTransform: "none",
+    height: 80,
+    width: 120,
+    margin: theme.spacing(1),
     display: "inline-block",
     overflow: "hidden",
     padding: 0
@@ -28,15 +38,22 @@ const useStyles = makeStyles((theme) => ({
   },
   captionNoImage: {
     marginTop: 18
+  },
+  captionNoImageCondensed: {
+    marginTop: 9
   }
 }));
 
 const LargeButton = React.memo<Props>((props: Props) => {
   const classes = useStyles();
+  const captionNoImage =
+    props.condensed ? classes.captionNoImageCondensed : classes.captionNoImage;
   const captionClasses = props.image != null ? classes.caption
-    : `${classes.caption} ${classes.captionNoImage}`;
+    : `${classes.caption} ${captionNoImage}`;
   return (
-    <Button classes={{ root: classes.root }} onClick={props.onClick}
+    <Button
+      classes={{ root: props.condensed ? classes.condensed : classes.root }}
+      onClick={props.onClick}
       variant="contained" color="primary" {...props.extraProps || {}}>
       { props.image != null &&
         <Avatar src={props.image} /> }

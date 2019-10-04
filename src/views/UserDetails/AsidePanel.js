@@ -37,7 +37,15 @@ const useTransactions = (user: User, limit: number = 5): Transactions => {
     ? transactions : transactions.slice(0, limit);
 };
 
+const useStyles = makeStyles((theme) => ({
+  listItem: {
+    paddingTop: 0,
+    paddingBottom: theme.spacing(0.75)
+  }
+}));
+
 const TransactionDetails = React.memo(({ transactions }) => {
+  const classes = useStyles();
   if (transactions === "loading") {
     return (
       <ListItem>
@@ -60,7 +68,7 @@ const TransactionDetails = React.memo(({ transactions }) => {
     );
   } else {
     return transactions.map((transaction) => (
-      <ListItem key={transaction.id}>
+      <ListItem key={transaction.id} classes={{root: classes.listItem}}>
         <ListItemText
           primary={[
             <Currency amount={transaction.delta}
@@ -81,14 +89,7 @@ const TransactionDetails = React.memo(({ transactions }) => {
   }
 });
 
-const useStyles = makeStyles((theme) => ({
-  transactions: {
-    padding: `${theme.spacing.unit}px 0`
-  }
-}));
-
 const TransactionsSidePanel = React.memo(({ user }) => {
-  const classes = useStyles();
   const transactions = useTransactions(user);
   const chart = typeof transactions === typeof "string" || (
     <Paper key="chart">
@@ -104,8 +105,7 @@ const TransactionsSidePanel = React.memo(({ user }) => {
         <ExpansionPanelSummary expandIcon={<ExpandMore />}>
           <Typography>Last Transactions</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails
-          classes={{ root: classes.transactions }}>
+        <ExpansionPanelDetails>
           <List>
             <TransactionDetails transactions={transactions} />
           </List>

@@ -11,7 +11,8 @@ import Currency from "components/Currency";
 type Props<T> = {
   products: Array<T>,
   category: string,
-  addCredit: (product: T) => () => void
+  addCredit: (product: T) => () => void,
+  condensed?: boolean
 };
 
 type Val = Product | number;
@@ -21,17 +22,17 @@ const ChangeCreditPanel = React.memo<Props<Val>>((props: Props<Val>) => {
     const amount = typeof product !== "number" ? -product.price : product;
     const key = typeof product !== "number" ? product.id : product;
     const extraText = typeof product !== "number" ? ` ${product.name}` : "";
+    const image = typeof product !== "number" && product.imagePath !== ""
+      ? product.imagePath : null;
     return (
-      <LargeButton
+      <LargeButton condensed={props.condensed}
         onClick={props.addCredit(product)} key={key}
-        image={typeof product !== "number" && product.imagePath !== ""
-          ? product.imagePath : null}
-        caption={
-          <React.Fragment>
-            {extraText}
-            <Currency amount={amount} fmt="diff" color="colorful" />
-          </React.Fragment>
-        } />
+        image={image}
+        caption={extraText}
+      >
+        <Currency amount={amount} fmt="diff" color="colorful"
+          extraProps={{ variant: image == null ? "h6" : "body1" }} />
+      </LargeButton>
     );
   };
 

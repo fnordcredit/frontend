@@ -44,27 +44,25 @@ const ChangeCreditPanels = React.memo((props) => {
   return (
     <Grid item xs={12} md={9}>
       <BarcodeScanner onSuccess={scannerSuccess} />
-      <ChangeCreditPanel products={[0.5, 1, 2, 5, 10]}
-        category="Add Credit" addCredit={addCredit} />
+      <ChangeCreditPanel products={[0.5, 1, 2, 5, 10, -0.5, -1, -1.5, -2, -5]}
+        category="Change Credit" addCredit={addCredit} condensed />
       { categories.map((cat) => (
         <ChangeCreditPanel // $FlowFixMe
           products={filterProducts(cat)}
           category={cat} key={cat} addCredit={addCredit} />
       ))}
-      <ChangeCreditPanel products={[-0.5, -1, -1.5, -2, -5]}
-        category="Remove Credit" addCredit={addCredit} />
     </Grid>
   );
 });
 
 const useStyles = makeStyles((theme) => ({
   aside: {
-    marginBottom: theme.spacing.unit * 2,
+    marginBottom: theme.spacing(2),
     [theme.breakpoints.down("sm")]: {
       paddingRight: 0
     },
     [theme.breakpoints.up("md")]: {
-      paddingRight: theme.spacing.unit * 2
+      paddingRight: theme.spacing(2)
     }
   }
 }));
