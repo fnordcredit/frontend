@@ -130,12 +130,13 @@ const UserSettings = React.memo<Props>((props: Props) => {
   const handleOpenMenu = () => setMenuOpen(true);
   const handleCloseMenu = () => setMenuOpen(false);
   const handleClose = () => props.onClose(user);
-  const { handleSave, handleNameChange, changed } = useSettingsState({
-    name: user.name,
-    changed: false
-  }, (u) => {
-    setUser(u);
-  });
+  const { handleSave, handleNameChange, handleGravatarChange, changed } =
+    useSettingsState({
+      name: user.name,
+      changed: false
+    }, (u) => {
+      setUser(u);
+    });
   const handleSaveClick = () => {
     handleSave(user);
   };
@@ -158,7 +159,8 @@ const UserSettings = React.memo<Props>((props: Props) => {
       <DesktopNavigation />
       <main className={classes.mainContainer}>
         <UserSettingsPanel user={user}
-          handleNameChange={handleNameChange} />
+          handleNameChange={handleNameChange}
+          handleGravatarChange={handleGravatarChange} />
       </main>
     </React.Fragment>
   );

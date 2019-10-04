@@ -5,8 +5,9 @@
 ### Features
 
 * Added an about view, that shows the current version and links to github
-* Added avatars
+* Added avatars using Gravatar
 * Added a user settings screen with a variety of settings available:
+  * Change your Avatar
   * Renaming
 * Added a ka-ching sounds when a transaction is made
 * Added an overview graph that shows your credit of the last 30 days

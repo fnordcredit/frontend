@@ -38,5 +38,12 @@ export default {
       id: user.id,
       newname: name
     }, { headers: { "x-user-pincode": pin == null ? "null" : pin }})
+  ),
+  changeGravatar: <T> (user: User, email: string,
+    pin?: string): AxiosPromise<T> => (
+    axios.post("/user/change-gravatar", {
+      id: user.id,
+      email: email
+    }, { headers: { "x-user-pincode": pin == null ? "null" : pin }})
   )
 };
