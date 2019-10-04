@@ -6,16 +6,16 @@
 
 * Added an about view, that shows the current version and links to github
 * Added avatars using Gravatar
-* Added a user settings screen with a variety of settings available:
+* Added a user settings screen with two settings for now with more comming later:
   * Change your Avatar
   * Renaming
 * Added a ka-ching sounds when a transaction is made
-* Added an overview graph that shows your credit of the last 30 days
 
 ### Minor Changes
 
 * Made the last transactions panel collabsible for better responsibility
 * Scanning an unknown barcode now displays an error message
+* Updated all dependencies
 
 ## v2.1.0
 

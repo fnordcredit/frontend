@@ -91,7 +91,7 @@ const TransactionDetails = React.memo(({ transactions }) => {
 
 const TransactionsSidePanel = React.memo(({ user }) => {
   const transactions = useTransactions(user);
-  const chart = typeof transactions === typeof "string" || (
+  const _chart = typeof transactions === typeof "string" || (
     <Paper key="chart">
       <TransactionChart
         // $FlowFixMe
@@ -111,7 +111,7 @@ const TransactionsSidePanel = React.memo(({ user }) => {
           </List>
         </ExpansionPanelDetails>
       </ExpansionPanel>
-      {chart}
+      {null /*chart*/}
     </React.Fragment>
   );
 });

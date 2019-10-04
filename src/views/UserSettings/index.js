@@ -42,20 +42,20 @@ const TopBarButton = React.memo(({handleOpenMenu, handleCloseSettings}) => (
 
 const CoreNavigation = React.memo(() => (
   <List component="nav">
-    <ListItem button>
-      <ListItemIcon selected={true}>
+    <ListItem button selected={true}>
+      <ListItemIcon>
         <UserIcon />
       </ListItemIcon>
       <ListItemText inset primary="User Settings" />
     </ListItem>
-    <ListItem button>
-      <ListItemIcon selected={true}>
+    <ListItem button disabled>
+      <ListItemIcon>
         <EmailIcon />
       </ListItemIcon>
       <ListItemText inset primary="Email Settings" />
     </ListItem>
-    <ListItem button>
-      <ListItemIcon disabled>
+    <ListItem button disabled>
+      <ListItemIcon>
         <PrivacyIcon />
       </ListItemIcon>
       <ListItemText inset primary="Privacy" />
@@ -145,8 +145,8 @@ const UserSettings = React.memo<Props>((props: Props) => {
     <React.Fragment>
       <TopBar
         leftNode={<TopBarButton handleOpenMenu={handleOpenMenu}
-          handleCloseSettings={handleClose} />
-        } title={`Settings: ${user.name}`}
+          handleCloseSettings={handleClose} />}
+        title={`Settings: ${user.name}`}
         fabIcon={<SaveIcon />}
         fabProps={{
           disabled: !changed,
@@ -155,7 +155,7 @@ const UserSettings = React.memo<Props>((props: Props) => {
         }}
       />
       <MobileNavigation handleCloseMenu={handleCloseMenu}
-        handleClose={handleClose} menuOpen={menuOpen} />
+         handleClose={handleClose} menuOpen={menuOpen} />
       <DesktopNavigation />
       <main className={classes.mainContainer}>
         <UserSettingsPanel user={user}

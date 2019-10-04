@@ -44,13 +44,15 @@ const ChangeCreditPanels = React.memo((props) => {
   return (
     <Grid item xs={12} md={9}>
       <BarcodeScanner onSuccess={scannerSuccess} />
-      <ChangeCreditPanel products={[0.5, 1, 2, 5, 10, -0.5, -1, -1.5, -2, -5]}
-        category="Change Credit" addCredit={addCredit} condensed />
+      <ChangeCreditPanel products={[0.5, 1, 2, 5, 10]}
+        category="Add Credit" addCredit={addCredit} condensed />
       { categories.map((cat) => (
         <ChangeCreditPanel // $FlowFixMe
           products={filterProducts(cat)}
           category={cat} key={cat} addCredit={addCredit} />
       ))}
+      <ChangeCreditPanel products={[-0.5, -1, -1.5, -2, -5]}
+        category="Remove Credit" addCredit={addCredit} condensed />
     </Grid>
   );
 });
