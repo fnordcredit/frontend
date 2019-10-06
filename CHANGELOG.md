@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.2.1
+
+### Hotfix
+
+* Fixed products not doing a line break
+
 ## v2.2.0
 
 ### Features

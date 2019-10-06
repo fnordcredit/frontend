@@ -7,6 +7,7 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Currency from "components/Currency";
+import makeStyles from "@material-ui/styles/makeStyles";
 
 type Props<T> = {
   products: Array<T>,
@@ -17,7 +18,14 @@ type Props<T> = {
 
 type Val = Product | number;
 
+const useStyles = makeStyles({
+  noFlex: {
+    display: "block"
+  }
+});
+
 const ChangeCreditPanel = React.memo<Props<Val>>((props: Props<Val>) => {
+  const classes = useStyles();
   const renderButton = (product: Val) => {
     const amount = typeof product !== "number" ? -product.price : product;
     const key = typeof product !== "number" ? product.id : product;
@@ -41,7 +49,7 @@ const ChangeCreditPanel = React.memo<Props<Val>>((props: Props<Val>) => {
       <ExpansionPanelSummary expandIcon={<ExpandMore />}>
         <Typography>{props.category}</Typography>
       </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
+      <ExpansionPanelDetails classes={{ root: classes.noFlex }}>
         {props.products.map(renderButton)}
       </ExpansionPanelDetails>
     </ExpansionPanel>
