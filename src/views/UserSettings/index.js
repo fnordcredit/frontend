@@ -1,6 +1,8 @@
 // @flow
 import React, { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import TopBar from "components/TopBar";
+import useUser from "hooks/useUser";
 import CloseIcon from "@material-ui/icons/Close";
 import SaveIcon from "@material-ui/icons/Save";
 import UserIcon from "@material-ui/icons/Person";
@@ -20,12 +22,7 @@ import makeStyles from "@material-ui/styles/makeStyles";
 import UserSettingsPanel from "./Panels/UserSettingsPanel";
 import useSettingsState from "./useSettingsState";
 
-export type Props = {
-  onClose: (u: User) => void,
-  user: User
-}
-
-const TopBarButton = React.memo(({handleOpenMenu, handleCloseSettings}) => (
+const TopBarButton = React.memo(({handleOpenMenu, userId}) => (
   <React.Fragment>
     <Hidden smUp implementation="css">
       <IconButton aria-label="Open Menu" onClick={handleOpenMenu}>
@@ -33,7 +30,8 @@ const TopBarButton = React.memo(({handleOpenMenu, handleCloseSettings}) => (
       </IconButton>
     </Hidden>
     <Hidden xsDown implementation="css">
-      <IconButton aria-label="Close Settings" onClick={handleCloseSettings}>
+      <IconButton aria-label="Close Settings" component={Link}
+        to={`/user/${userId}`}>
         <CloseIcon />
       </IconButton>
     </Hidden>
@@ -64,7 +62,7 @@ const CoreNavigation = React.memo(() => (
 ));
 
 const MobileNavigation = React.memo(
-  ({menuOpen, handleCloseMenu, handleClose}) => (
+  ({menuOpen, handleCloseMenu, userId}) => (
     <Hidden smUp implementation="css">
       <Drawer variant="temporary" open={menuOpen}>
         <ListItem button onClick={handleCloseMenu} aria-label="Close Menu">
@@ -75,7 +73,7 @@ const MobileNavigation = React.memo(
         <Divider />
         <CoreNavigation />
         <Divider />
-        <ListItem button onClick={handleClose}>
+        <ListItem button component={Link} to={`/user/${userId}`}>
           <ListItemIcon>
             <CloseIcon />
           </ListItemIcon>
@@ -98,9 +96,7 @@ const DesktopNavigation = React.memo(() => {
   const classes = useNavigationStyles();
   return (
     <Hidden xsDown implementation="css">
-      <Drawer variant="permanent" open
-        classes={classes}
-      >
+      <Drawer variant="permanent" open classes={classes}>
         <CoreNavigation />
       </Drawer>
     </Hidden>
@@ -124,18 +120,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const UserSettings = React.memo<Props>((props: Props) => {
-  const [user, setUser] = useState(props.user);
+const UserSettings = React.memo<{}>(() => {
+  const { userId } = useParams();
+  const user = useUser(userId);
   const [menuOpen, setMenuOpen] = useState(false);
   const handleOpenMenu = () => setMenuOpen(true);
   const handleCloseMenu = () => setMenuOpen(false);
-  const handleClose = () => props.onClose(user);
   const { handleSave, handleNameChange, handleGravatarChange, changed } =
     useSettingsState({
       name: user.name,
       changed: false
-    }, (u) => {
-      setUser(u);
     });
   const handleSaveClick = () => {
     handleSave(user);
@@ -145,7 +139,8 @@ const UserSettings = React.memo<Props>((props: Props) => {
     <React.Fragment>
       <TopBar
         leftNode={<TopBarButton handleOpenMenu={handleOpenMenu}
-          handleCloseSettings={handleClose} />}
+          userId={userId} />
+        }
         title={`Settings: ${user.name}`}
         fabIcon={<SaveIcon />}
         fabProps={{
@@ -154,8 +149,8 @@ const UserSettings = React.memo<Props>((props: Props) => {
           onClick: handleSaveClick
         }}
       />
-      <MobileNavigation handleCloseMenu={handleCloseMenu}
-         handleClose={handleClose} menuOpen={menuOpen} />
+      <MobileNavigation handleCloseMenu={handleCloseMenu} userId={userId}
+        menuOpen={menuOpen} />
       <DesktopNavigation />
       <main className={classes.mainContainer}>
         <UserSettingsPanel user={user}

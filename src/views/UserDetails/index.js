@@ -1,5 +1,6 @@
 // @flow
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useMemo } from "react";
+import { Link, Redirect, useParams } from "react-router-dom";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -18,13 +19,8 @@ import TopBar from "components/TopBar";
 import Main from "components/Main";
 import ProductsContext from "contexts/Products";
 import useErrorHandler from "contexts/Error";
+import useUser from "hooks/useUser";
 import makeStyles from "@material-ui/styles/makeStyles";
-
-type Props = {
-  user: User,
-  backToList: () => void,
-  openSettings: (user: User) => void
-};
 
 const ChangeCreditPanels = React.memo((props) => {
   const { addCredit, backToList, onBarcodeNotFound } = props;
@@ -69,18 +65,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const UserDetails = (props: Props) => {
+const UserDetails = React.memo<{}>(() => {
+  const { userId } = useParams();
   const classes = useStyles();
   const isIdle = useIdle(30e3);
-  if (isIdle) {
-    props.backToList();
-  }
-  const openSettings = () => props.openSettings(props.user);
-  const [user, setUser] = useState(props.user);
+  const [redirectBack, setBackToList] = useState(false);
+  const user = useUser(userId);
+  const backToList = () => setBackToList(true);
   const [snackbarMsg, setSnackbarMsg] = useState(null);
   const closeSnackbar = () => setSnackbarMsg(null);
   const handleError = useErrorHandler();
-  const [audio, _audioState, audioControls] = useAudio({ src: kaChing });
+  const [audio, _audioState, audioControls] = useAudio({ src: `/${kaChing}` });
   const kaching = () => {
     // reset back to 0 for when two transactions are too close after each other
     audioControls.seek(0);
@@ -93,12 +88,12 @@ const UserDetails = (props: Props) => {
       </Typography>
     );
   };
-  const addCredit = (ap: Product | number) => () => {
+  const addCredit = useMemo(() => (ap: Product | number) => () => {
     if (typeof ap === "number") {
       const am: number = ap;
-      API.addCredit(user, am)
-        .then((response) => {
-          setUser(response.data);
+      API.addCredit(userId, am)
+        .then((_response) => {
+          //setUser(response.data);
           kaching();
           setSnackbarMsg(am < 0
             ? `Successfully removed ${Cur.formatString(am)} from your Account`
@@ -106,31 +101,32 @@ const UserDetails = (props: Props) => {
         }).catch(handleError);
     } else {
       const p: Product = ap;
-      API.buyProduct(user, p)
-        .then((response) => {
-          setUser(response.data);
+      API.buyProduct(userId, p)
+        .then((_response) => {
+          //setUser(response.data);
           kaching();
           setSnackbarMsg(`Successfully bought ${p.name} `
             + `for ${Cur.formatString(p.price)}`);
         }).catch(handleError);
     }
-  };
+  }, []);
   return (
     <React.Fragment>
+      { (redirectBack || isIdle) && <Redirect to="/" /> }
       <TopBar leftNode={
-        <Button onClick={props.backToList}>
+        <Button component={Link} to="/">
           <KeyboardBackspace /> Back
         </Button>
-      } title={`User: ${props.user.name}`}
-      fabAction={openSettings}
+      } title={`User: ${user.name}`}
+      fabProps={{ component: Link, to: `/settings/${userId}` }}
       fabIcon={<SettingsIcon />} />
       <Main>
         <Grid container justify="center">
           <Grid item xs={12} md={3} className={classes.aside}>
-            <AsidePanel user={user} transactions={"disabled"} />
+            <AsidePanel user={user} />
           </Grid>
           <ChangeCreditPanels addCredit={addCredit}
-            backToList={props.backToList}
+            backToList={backToList}
             onBarcodeNotFound={handleBarcodeNotFound} />
         </Grid>
       </Main>
@@ -145,6 +141,6 @@ const UserDetails = (props: Props) => {
       />
     </React.Fragment>
   );
-};
+});
 
 export default UserDetails;

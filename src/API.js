@@ -4,17 +4,17 @@ import type { AxiosPromise } from "axios";
 import * as Cur from "components/Currency";
 
 export default {
-  addCredit: <T> (user: User, delta: number): AxiosPromise<T> => (
+  addCredit: <T> (userId: number, delta: number): AxiosPromise<T> => (
     axios.post("/user/credit",
-      { id: user.id
+      { id: userId
         , delta: delta
         , product: null
         , description: Cur.formatString(delta, "diff")
       })
   ),
-  buyProduct: <T> (user: User, product: Product): AxiosPromise<T> => (
+  buyProduct: <T> (userId: number, product: Product): AxiosPromise<T> => (
     axios.post("/user/credit",
-      { id: user.id
+      { id: userId
         , delta: -product.price
         , product: product
         , description: product.name
@@ -30,8 +30,8 @@ export default {
     axios.get(`/user/${user.id}`,
       { headers: { "x-user-pincode": pin == null ? "null" : pin }})
   ),
-  getTransactions: <T> (user: User): AxiosPromise<T> => (
-    axios.get(`/transactions/${user.id}`)
+  getTransactions: <T> (userId: number): AxiosPromise<T> => (
+    axios.get(`/transactions/${userId}`)
   ),
   renameUser: <T> (user: User, name: string, pin?: string): AxiosPromise<T> => (
     axios.post("/user/rename", {

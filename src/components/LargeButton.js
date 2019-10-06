@@ -9,7 +9,7 @@ type Props = {
   caption: React.Node,
   children?: React.Node,
   image?: ?string,
-  onClick: () => void,
+  onClick?: () => void,
   condensed?: boolean,
   extraProps?: Object
 };

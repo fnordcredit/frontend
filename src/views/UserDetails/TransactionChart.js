@@ -4,8 +4,7 @@ import { Line } from "react-chartjs-2";
 import { DateTime } from "luxon";
 
 export type Props = {
-  transactions: Array<Transaction>,
-  currentCredit: number
+  transactions: Array<Transaction>
 };
 
 const moneyAmountOnDay = ({ day, currentCredit, transactions }) => {
@@ -53,7 +52,7 @@ const TransactionChart = React.memo<Props>((props) => {
   const data = {
     labels: generateLabels(),
     datasets: [
-      generateDataset(props)
+      generateDataset({ transactions: props.transactions, currentCredit: 0 })
     ]
   };
   return <Line data={data} />;

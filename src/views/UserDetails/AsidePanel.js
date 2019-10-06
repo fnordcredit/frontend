@@ -25,7 +25,7 @@ type Transactions = Array<Transaction> | "loading" | "disabled" | "empty";
 const useTransactions = (user: User, limit: number = 5): Transactions => {
   const [transactions, setTransactions] = useState("loading");
   useEffect(() => {
-    API.getTransactions(user)
+    API.getTransactions(user.id)
       .then((response) => setTransactions(
         response.data.length > 0
           ? response.data.sort((a, b) => (a.time < b.time ? 1 : -1))
@@ -89,14 +89,13 @@ const TransactionDetails = React.memo(({ transactions }) => {
   }
 });
 
-const TransactionsSidePanel = React.memo(({ user }) => {
-  const transactions = useTransactions(user);
-  const _chart = typeof transactions === typeof "string" || (
+const TransactionsSidePanel = React.memo(({ transactions }) => {
+  const chart = typeof transactions === typeof "string" || (
     <Paper key="chart">
-      <TransactionChart
+      <TransactionChart transactions={
         // $FlowFixMe
-        transactions={transactions}
-        currentCredit={user.credit} />
+        transactions
+      } />
     </Paper>
   );
   return (
@@ -111,12 +110,13 @@ const TransactionsSidePanel = React.memo(({ user }) => {
           </List>
         </ExpansionPanelDetails>
       </ExpansionPanel>
-      {null /*chart*/}
+      {chart}
     </React.Fragment>
   );
 });
 
 const AsidePanel = React.memo<AsidePanelProps>(({ user }: AsidePanelProps) => {
+  const transactions = useTransactions(user);
   return (
     <React.Fragment>
       <Paper style={{ marginBottom: 20 }} key="credit">
@@ -130,7 +130,7 @@ const AsidePanel = React.memo<AsidePanelProps>(({ user }: AsidePanelProps) => {
           </ListItem>
         </List>
       </Paper>
-      <TransactionsSidePanel user={user} />
+      <TransactionsSidePanel transactions={transactions} />
     </React.Fragment>
   );
 });

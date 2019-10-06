@@ -1,5 +1,5 @@
 // @flow
-import React, { useEffect, useState, type Node } from "react";
+import React, { useEffect, useState, useContext, type Node } from "react";
 import API from "API";
 
 export type UserContext = {
@@ -11,25 +11,28 @@ const Context: React$Context<UserContext> = React.createContext(
 );
 
 export type UserLoaderProps = {
-  children: Node,
-  fallback: Node
+  children: Node
 };
-export const UserLoader = ({ children, fallback }: UserLoaderProps) => {
+
+export const UserLoader = ({ children }: UserLoaderProps) => {
   const [users, setUsers] = useState([]);
-  const [loaded, setLoaded] = useState(false);
   const refresh = () => {
     API.getAllUsers()
       .then((response) => {
         setUsers(response.data);
-        setLoaded(true);
       });
   };
   useEffect(refresh, []);
   return (
     <Context.Provider value={{ users, refresh }}>
-      {loaded ? children : fallback}
+      {children}
     </Context.Provider>
   );
+};
+
+export const useUsers = () => {
+  const { users } = useContext(Context);
+  return users;
 };
 
 export default Context;

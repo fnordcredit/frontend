@@ -1,6 +1,8 @@
 // @flow
+import { useContext } from "react";
 import { useSetState } from "react-use";
 import useErrorHandler from "contexts/Error";
+import UserContext from "contexts/Users";
 import API from "API";
 
 export type Settings = {
@@ -8,8 +10,6 @@ export type Settings = {
   avatar?: { gravatar: string },
   changed: boolean
 };
-
-export type OnSave = (user: User) => void;
 
 const apiReqRename = async (initialState, state, user) => {
   if (initialState.name === state.name) {
@@ -27,8 +27,9 @@ const apiReqChangeAvatar = async (_initialState, state, user) => {
   return data;
 };
 
-const useSettingsState = (initialState: Settings, onSave: OnSave) => {
+const useSettingsState = (initialState: Settings) => {
   const [state, setState] = useSetState(initialState);
+  const refreshUsers = useContext(UserContext).refresh;
   const handleError = useErrorHandler();
   const handleNameChange = (name: string) => {
     setState({ name: name, changed: true });
@@ -48,8 +49,8 @@ const useSettingsState = (initialState: Settings, onSave: OnSave) => {
     return u2;
   };
   const handleSave = (user: User) => {
-    handleSaveAsync(user).then((u) => {
-      onSave(u);
+    handleSaveAsync(user).then((_u) => {
+      refreshUsers();
       setState({ changed: false });
     }).catch(handleError);
   };

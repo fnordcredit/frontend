@@ -18,8 +18,7 @@ export type { Sorting } from "./SelectSorting";
 export type TopBarProps = {
   sorted: Sorting,
   changeSorting: (s: Sorting) => void,
-  handleSearch: (s: string) => void,
-  addUser: (u: string) => void
+  handleSearch: (s: string) => void
 };
 
 const searchStyles = (theme) => ({
@@ -117,7 +116,7 @@ const UserListTopBar = React.memo<TopBarProps>((props: TopBarProps) => {
         } fabIcon={<AddIcon />}
         fabAction={handleDialogOpen}
       />
-      <AddUserDialog addUser={props.addUser}
+      <AddUserDialog
         onClose={handleDialogClose}
         open={dialogOpen} />
     </React.Fragment>
