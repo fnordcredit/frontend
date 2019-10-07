@@ -38,7 +38,7 @@ export type Props = {
 
 type ChangeAvatarProps = {
   user: User,
-  handleGravatarChange: (email: string) => void
+  onGravatarChange: (email: string) => void
 };
 
 const ChangeAvatar = React.memo<ChangeAvatarProps>((props) => {
@@ -52,7 +52,7 @@ const ChangeAvatar = React.memo<ChangeAvatarProps>((props) => {
     setEmail(e.target.value);
   };
   const handleSubmit = () => {
-    props.handleGravatarChange(email);
+    props.onGravatarChange(email);
     setOpen(false);
   };
   return (
@@ -107,7 +107,7 @@ const UserSettingsPanel = React.memo<Props>((props) => {
         User Settings
       </Typography>
       <ChangeAvatar user={user}
-        handleGravatarChange={props.handleGravatarChange} />
+        onGravatarChange={props.handleGravatarChange} />
       <List subheader={<ListSubheader>General Settings</ListSubheader>}>
         <ListItem>
           <ListItemIcon>

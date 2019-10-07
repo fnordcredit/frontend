@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useContext, useMemo } from "react";
+import React, { useState, useContext, useMemo, useCallback } from "react";
 import { Link, Redirect, useParams } from "react-router-dom";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Button from "@material-ui/core/Button";
@@ -25,7 +25,8 @@ import makeStyles from "@material-ui/styles/makeStyles";
 const ChangeCreditPanels = React.memo((props) => {
   const { addCredit, backToList, onBarcodeNotFound } = props;
   const products = useContext(ProductsContext);
-  const categories = [...new Set(products.map((obj) => obj.category))];
+  const categories = useMemo(() =>
+    [...new Set(products.map((obj) => obj.category))]);
   const scannerSuccess = (msg: string) => {
     const product = products.find((prod) => prod.ean.split("|").includes(msg));
     if (product != null) {
@@ -37,16 +38,19 @@ const ChangeCreditPanels = React.memo((props) => {
     }
   };
   const filterProducts = (cat) => products.filter((p) => p.category === cat);
+  const renderedCategories = useMemo(() => (
+    categories.map((cat) => (
+      <ChangeCreditPanel // $FlowFixMe
+        products={filterProducts(cat)}
+        category={cat} key={cat} addCredit={addCredit} />
+    ))
+  ), [products]);
   return (
     <Grid item xs={12} md={9}>
       <BarcodeScanner onSuccess={scannerSuccess} />
       <ChangeCreditPanel products={[0.5, 1, 2, 5, 10]}
         category="Add Credit" addCredit={addCredit} condensed />
-      { categories.map((cat) => (
-        <ChangeCreditPanel // $FlowFixMe
-          products={filterProducts(cat)}
-          category={cat} key={cat} addCredit={addCredit} />
-      ))}
+      { renderedCategories }
       <ChangeCreditPanel products={[-0.5, -1, -1.5, -2, -5]}
         category="Remove Credit" addCredit={addCredit} condensed />
     </Grid>
@@ -71,9 +75,9 @@ const UserDetails = React.memo<{}>(() => {
   const isIdle = useIdle(30e3);
   const [redirectBack, setBackToList] = useState(false);
   const user = useUser(userId);
-  const backToList = () => setBackToList(true);
+  const backToList = useCallback(() => setBackToList(true));
   const [snackbarMsg, setSnackbarMsg] = useState(null);
-  const closeSnackbar = () => setSnackbarMsg(null);
+  const closeSnackbar = useCallback(() => setSnackbarMsg(null));
   const handleError = useErrorHandler();
   const [audio, _audioState, audioControls] = useAudio({ src: `/${kaChing}` });
   const kaching = () => {
@@ -81,14 +85,14 @@ const UserDetails = React.memo<{}>(() => {
     audioControls.seek(0);
     audioControls.play();
   };
-  const handleBarcodeNotFound = () => {
+  const handleBarcodeNotFound = useCallback(() => {
     setSnackbarMsg(
       <Typography color="error">
         Unknown barcode scanned. Please enter the transaction manually.
       </Typography>
     );
-  };
-  const addCredit = useMemo(() => (ap: Product | number) => () => {
+  });
+  const addCredit = useCallback((ap: Product | number) => () => {
     if (typeof ap === "number") {
       const am: number = ap;
       API.addCredit(userId, am)

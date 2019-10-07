@@ -1,5 +1,15 @@
 # Changelog
 
+## v.2.3.0
+
+### Features
+
+* Make use of react-router to allow for bookmarkable profile links
+
+### Minor Changes
+
+* Increased performance
+
 ## v2.2.1
 
 ### Hotfix
