@@ -88,7 +88,8 @@ const UserList = React.memo<Props>((props) => {
       }
       {selectedUser === "" || <Redirect to={`/user/${selectedUser}`} />}
       <BarcodeScanner onSuccess={barcodeSuccess} />
-      <OrderedList users={users} sorting={sorting} search={search} n={n} />
+      <OrderedList users={users} sorting={sorting}
+        search={isActive ? search : ""} n={n} />
     </div>
   );
 });

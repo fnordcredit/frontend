@@ -150,7 +150,8 @@ const UserDetails = React.memo<Props>((props) => {
             onClose={handleCloseVertMenu} uid={uid} />
         </React.Fragment>}
       </Grid>
-      <ChangeCreditPanels addCredit={addCredit} search={search} />
+      <ChangeCreditPanels addCredit={addCredit}
+        search={uid == null ? "" : search} />
       {audio}
     </Grid>
   );
