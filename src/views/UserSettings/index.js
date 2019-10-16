@@ -1,12 +1,10 @@
 // @flow
-import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import TopBar from "components/TopBar";
+import React, { useCallback } from "react";
+import { useParams, useHistory } from "react-router-dom";
 import useUser from "hooks/useUser";
 import CloseIcon from "@material-ui/icons/Close";
 import SaveIcon from "@material-ui/icons/Save";
 import UserIcon from "@material-ui/icons/Person";
-import MenuIcon from "@material-ui/icons/Menu";
 import EmailIcon from "@material-ui/icons/Email";
 import LeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import PrivacyIcon from "@material-ui/icons/Visibility";
@@ -18,25 +16,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import Divider from "@material-ui/core/Divider";
+import Portal from "@material-ui/core/Portal";
 import makeStyles from "@material-ui/styles/makeStyles";
 import UserSettingsPanel from "./Panels/UserSettingsPanel";
 import useSettingsState from "./useSettingsState";
-
-const TopBarButton = React.memo(({handleOpenMenu, userId}) => (
-  <React.Fragment>
-    <Hidden smUp implementation="css">
-      <IconButton aria-label="Open Menu" onClick={handleOpenMenu}>
-        <MenuIcon />
-      </IconButton>
-    </Hidden>
-    <Hidden xsDown implementation="css">
-      <IconButton aria-label="Close Settings" component={Link}
-        to={`/user/${userId}`}>
-        <CloseIcon />
-      </IconButton>
-    </Hidden>
-  </React.Fragment>
-));
 
 const CoreNavigation = React.memo(() => (
   <List component="nav">
@@ -61,8 +44,9 @@ const CoreNavigation = React.memo(() => (
   </List>
 ));
 
-const MobileNavigation = React.memo(
-  ({menuOpen, handleCloseMenu, userId}) => (
+const MobileNavigation = React.memo(({menuOpen, handleCloseMenu}) => {
+  const history = useHistory();
+  return (
     <Hidden smUp implementation="css">
       <Drawer variant="temporary" open={menuOpen}>
         <ListItem button onClick={handleCloseMenu} aria-label="Close Menu">
@@ -73,7 +57,7 @@ const MobileNavigation = React.memo(
         <Divider />
         <CoreNavigation />
         <Divider />
-        <ListItem button component={Link} to={`/user/${userId}`}>
+        <ListItem button onClick={history.goBack}>
           <ListItemIcon>
             <CloseIcon />
           </ListItemIcon>
@@ -81,8 +65,8 @@ const MobileNavigation = React.memo(
         </ListItem>
       </Drawer>
     </Hidden>
-  )
-);
+  );
+});
 
 const useNavigationStyles = makeStyles({
   paper: {
@@ -120,38 +104,36 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const UserSettings = React.memo<{}>(() => {
+type Props = {
+  menuOpen: boolean,
+  closeMenu: () => void,
+  container: Object,
+};
+
+const UserSettings = React.memo<Props>(({ menuOpen, closeMenu, container }) => {
   const { userId } = useParams();
   const user = useUser(userId);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const handleOpenMenu = () => setMenuOpen(true);
-  const handleCloseMenu = () => setMenuOpen(false);
   const { handleSave, handleNameChange, handleGravatarChange, changed } =
     useSettingsState({
       name: user.name,
       changed: false
     });
-  const handleSaveClick = () => {
+  const handleSaveClick = useCallback(() => {
     handleSave(user);
-  };
+  });
   const classes = useStyles();
   return (
     <React.Fragment>
-      <TopBar
-        leftNode={<TopBarButton handleOpenMenu={handleOpenMenu}
-          userId={userId} />
-        }
-        title={`Settings: ${user.name}`}
-        fabIcon={<SaveIcon />}
-        fabProps={{
-          disabled: !changed,
-          classes: { disabled: classes.disabled },
-          onClick: handleSaveClick
-        }}
-      />
-      <MobileNavigation handleCloseMenu={handleCloseMenu} userId={userId}
-        menuOpen={menuOpen} />
+      <MobileNavigation handleCloseMenu={closeMenu} menuOpen={menuOpen} />
       <DesktopNavigation />
+      <Portal container={container.current}>
+        <IconButton aria-label="Save changes"
+          color="secondary" onClick={handleSaveClick}
+          disabled={!changed}
+        >
+          <SaveIcon />
+        </IconButton>
+      </Portal>
       <main className={classes.mainContainer}>
         <UserSettingsPanel user={user}
           handleNameChange={handleNameChange}

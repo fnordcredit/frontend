@@ -5,6 +5,10 @@
 ### Features
 
 * Make use of react-router to allow for bookmarkable profile links
+* Redesign of the App Bar:
+  * Made the product list searchable
+  * Replaced the floating action button with a kebab menu
+* Added an option to export your transactions as QIF
 
 ### Minor Changes
 

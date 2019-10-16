@@ -117,6 +117,12 @@ const TransactionsSidePanel = React.memo(({ transactions }) => {
 
 const AsidePanel = React.memo<AsidePanelProps>(({ user }: AsidePanelProps) => {
   const transactions = useTransactions(user);
+  const nameAndAmount = (
+    <React.Fragment>
+      <Typography variant="h5">{user.name}</Typography>
+      <Currency amount={user.credit} fmt="normal" color="negOnly" />
+    </React.Fragment>
+  );
   return (
     <React.Fragment>
       <Paper style={{ marginBottom: 20 }} key="credit">
@@ -124,8 +130,7 @@ const AsidePanel = React.memo<AsidePanelProps>(({ user }: AsidePanelProps) => {
           <ListItem>
             { user.avatar && <Avatar src={user.avatar} /> }
             <ListItemText
-              primary={<Currency amount={user.credit}
-                fmt="normal" color="negOnly" />}
+              primary={nameAndAmount}
               secondary="Current Credit" />
           </ListItem>
         </List>

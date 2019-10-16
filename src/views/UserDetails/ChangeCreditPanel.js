@@ -44,6 +44,10 @@ const ChangeCreditPanel = React.memo<Props<Val>>((props: Props<Val>) => {
     );
   };
 
+  if (props.products.length === 0) {
+    return null;
+  }
+
   return (
     <ExpansionPanel defaultExpanded>
       <ExpansionPanelSummary expandIcon={<ExpandMore />}>

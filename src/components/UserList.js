@@ -6,6 +6,7 @@ import { useUsers } from "contexts/Users";
 import BarcodeScanner from "components/BarcodeScanner";
 import LargeButton from "components/LargeButton";
 import Currency from "components/Currency";
+import UserListVerticalMenu from "components/VerticalMenu/UserListVerticalMenu";
 
 import type { Sorting } from "components/SelectSorting";
 
@@ -54,10 +55,13 @@ const useStyles = makeStyles({
 
 type Props = {
   sorting: Sorting,
-  search: string
+  search: string,
+  vertMenuAnchorEl: Object,
+  handleCloseVertMenu: () => void
 };
 
-const UserList = React.memo<Props>(({ sorting, search }) => {
+const UserList = React.memo<Props>((props) => {
+  const { sorting, search, vertMenuAnchorEl, handleCloseVertMenu } = props;
   const users = useUsers();
   const classes = useStyles();
   const [selectedUser, setSelectedUser] = useState("");
@@ -77,6 +81,11 @@ const UserList = React.memo<Props>(({ sorting, search }) => {
   });
   return (
     <div className={divClass}>
+      { isActive &&
+        <UserListVerticalMenu
+          anchorEl={vertMenuAnchorEl}
+          onClose={handleCloseVertMenu} />
+      }
       {selectedUser === "" || <Redirect to={`/user/${selectedUser}`} />}
       <BarcodeScanner onSuccess={barcodeSuccess} />
       <OrderedList users={users} sorting={sorting} search={search} n={n} />
