@@ -8,6 +8,7 @@ import UserList from "components/UserList";
 import TopBar from "components/TopBar";
 import UserSettings from "views/UserSettings";
 import Main from "components/Main";
+import ResetScroll from "components/ResetScroll";
 import fnordCreditTheme from "colors";
 import { ProductLoader } from "contexts/Products";
 import { ErrorHandler } from "contexts/Error";
@@ -47,6 +48,7 @@ const App = React.memo(() => {
   return (
     <BrowserRouter>
       <HistoryInitializer />
+      <ResetScroll />
       <TopBar sorted={sorting}
         changeSorting={setSorting}
         handleSearch={setSearch}
