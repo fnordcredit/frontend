@@ -13,6 +13,7 @@
 ### Minor Changes
 
 * Increased performance
+* Bug fix: Fnordcredit will now automatically jump to the top after selecting a user
 
 ## v2.2.1
 
