@@ -8,6 +8,7 @@ module.exports = {
     "eslint:recommended",
     "plugin:flowtype/recommended",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -15,6 +16,12 @@ module.exports = {
       "jsx": true
     },
     "sourceType": "module"
+  },
+  "settings": {
+    "react": {
+      "version": "detect",
+      "flowVersion": "detect"
+    }
   },
   "plugins": [
     "react", "flowtype", "fp"

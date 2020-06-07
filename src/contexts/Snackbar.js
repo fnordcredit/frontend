@@ -18,7 +18,7 @@ export const SnackbarManager = React.memo<Props>(({ children }) => {
   const [message, setMessage] = useState(null);
   const closeSnackbar = useCallback(() => {
     setMessage(null);
-  });
+  }, [setMessage]);
   return (
     <Context.Provider value={{ setMessage, message }}>
       {children}

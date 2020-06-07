@@ -46,6 +46,7 @@ const CoreNavigation = React.memo(() => (
 
 const MobileNavigation = React.memo(({menuOpen, handleCloseMenu}) => {
   const history = useHistory();
+  const handleBackButtonClick = history.goBack;
   return (
     <Hidden smUp implementation="css">
       <Drawer variant="temporary" open={menuOpen}>
@@ -57,7 +58,7 @@ const MobileNavigation = React.memo(({menuOpen, handleCloseMenu}) => {
         <Divider />
         <CoreNavigation />
         <Divider />
-        <ListItem button onClick={history.goBack}>
+        <ListItem button onClick={handleBackButtonClick}>
           <ListItemIcon>
             <CloseIcon />
           </ListItemIcon>
@@ -120,7 +121,7 @@ const UserSettings = React.memo<Props>(({ menuOpen, closeMenu, container }) => {
     });
   const handleSaveClick = useCallback(() => {
     handleSave(user);
-  });
+  }, [handleSave, user]);
   const classes = useStyles();
   return (
     <React.Fragment>

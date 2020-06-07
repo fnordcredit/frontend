@@ -24,7 +24,7 @@ const ChangeCreditPanels = React.memo((props) => {
   const setSnackbarMsg = useSnackbar();
   const [backToList, setBackToList] = useState(false);
   const categories = useMemo(() =>
-    [...new Set(products.map((obj) => obj.category))]);
+    [...new Set(products.map((obj) => obj.category))], [products]);
   const scannerSuccess = useCallback((msg: string) => {
     const product = products.find((prod) => prod.ean.split("|").includes(msg));
     if (product != null) {
@@ -39,22 +39,22 @@ const ChangeCreditPanels = React.memo((props) => {
         </Typography>
       );
     }
-  });
+  }, [products, addCredit, setBackToList, setSnackbarMsg]);
   const filterProducts = useCallback((cat) => (
     products.filter((p) => p.category === cat)
-  ));
+  ), [products]);
   const searchProducts = useCallback((cat) => (
     filterProducts(cat).filter(
       (p) => p.name.toLowerCase().includes(search.toLowerCase())
     )
-  ));
+  ), [filterProducts, search]);
   const renderedCategories = useMemo(() => (
     categories.map((cat) => (
       <ChangeCreditPanel // $FlowFixMe
         products={searchProducts(cat)}
         category={cat} key={cat} addCredit={addCredit} />
     ))
-  ), [products, addCredit, search]);
+  ), [addCredit, categories, searchProducts]);
   return (
     <Grid item xs={12} md={9}>
       { backToList && <Redirect to="/" /> }
@@ -107,11 +107,11 @@ const UserDetails = React.memo<Props>((props) => {
   const classes = useStyles();
   const uid = userDetailsMatch != null ? userDetailsMatch.params.userId : null;
   const [audio, _audioState, audioControls] = useAudio({ src: `/${kaChing}` });
-  const kaching = () => {
+  const kaching = useCallback(() => {
     // reset back to 0 for when two transactions are too close after each other
     audioControls.seek(0);
     audioControls.play();
-  };
+  }, [audioControls]);
   const handleError = useErrorHandler();
   const addCredit = useCallback((ap: Product | number) => () => {
     if (uid == null) {
@@ -139,7 +139,7 @@ const UserDetails = React.memo<Props>((props) => {
             + `for ${Cur.formatString(p.price)}`);
         }).catch(handleError);
     }
-  }, [uid]);
+  }, [uid, kaching, handleError, setSnackbarMsg]);
   const gridClass = uid == null ? classes.hidden : "";
   return (
     <Grid container justify="center" className={gridClass}>

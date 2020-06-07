@@ -1,5 +1,5 @@
 // @flow
-import React, { type Node, type Ref } from "react";
+import React, { type Node, type Ref, useCallback } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import VerticalIcon from "@material-ui/icons/MoreVert";
@@ -41,14 +41,15 @@ const useView = () => {
 
 const BackButton = React.memo(() => {
   const history = useHistory();
+  const handleBackButtonPress = history.goBack;
   return (
-    <Button onClick={history.goBack}>
+    <Button onClick={handleBackButtonPress}>
       <KeyboardBackspace /> Back
     </Button>
   );
 });
 
-const BurgerMenu = React.memo(({ handleOpenMenu }) => {
+const BurgerMenu = React.memo(({ onMenuOpened }) => {
   const view = useView();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
@@ -56,6 +57,7 @@ const BurgerMenu = React.memo(({ handleOpenMenu }) => {
   if (view === "list") {
     return null;
   }
+  const handleOpenMenu = onMenuOpened;
   if (hasMenu) {
     return (
       <IconButton aria-label="Open Menu" onClick={handleOpenMenu}>
@@ -69,13 +71,13 @@ const BurgerMenu = React.memo(({ handleOpenMenu }) => {
   }
 });
 
-const VerticalMenu = React.memo(({ handleVertMenuOpen }) => {
+const VerticalMenu = React.memo(({ onVertMenuOpened }) => {
   const hasVerticalMenu = useView() !== "settings";
   if (!hasVerticalMenu) {
     return null;
   }
   return (
-    <IconButton aria-label="Open extra menu" onClick={handleVertMenuOpen}>
+    <IconButton aria-label="Open extra menu" onClick={onVertMenuOpened}>
       <VerticalIcon />
     </IconButton>
   );
@@ -104,24 +106,26 @@ const SearchElement = React.memo((props) => {
 
 export type TopBarProps = {
   sorted: Sorting,
-  changeSorting: (s: Sorting) => void,
+  onSortingChanged: (s: Sorting) => void,
   handleSearch: (s: string) => void,
   actionButtonContainer: Ref<Node>,
-  handleVertMenuOpen: (e: Event) => void,
-  handleOpenMenu: () => void
+  onVertMenuOpened: (e: Event) => void,
+  onMenuOpened: () => void
 };
 
 const TopBar = React.memo<TopBarProps>((props) => {
-  // $FlowFixMe
-  const handleSearch = (e) => props.handleSearch(e.target.value);
+  const propsHandleSearch = props.handleSearch;
+  const handleSearch = useCallback((e) =>
+    // $FlowFixMe
+    propsHandleSearch(e.target.value), [propsHandleSearch]);
   const classes = useStyles();
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
-        <BurgerMenu handleOpenMenu={props.handleOpenMenu} />
-        <SortingTool sorting={props.sorted} onChange={props.changeSorting} />
+        <BurgerMenu onMenuOpened={props.onMenuOpened} />
+        <SortingTool sorting={props.sorted} onChange={props.onSortingChanged} />
         <SearchElement onChange={handleSearch} />
-        <VerticalMenu handleVertMenuOpen={props.handleVertMenuOpen} />
+        <VerticalMenu onVertMenuOpened={props.onVertMenuOpened} />
         <div ref={props.actionButtonContainer} />
       </Toolbar>
     </AppBar>

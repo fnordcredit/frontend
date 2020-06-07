@@ -1,6 +1,6 @@
 // @flow
 import React, { useState, useCallback, useEffect } from "react";
-import { BrowserRouter, Route, Switch, useHistory } from "react-router-dom";
+import { BrowserRouter, Route, useHistory } from "react-router-dom";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TopBar from "components/TopBar";
@@ -28,59 +28,55 @@ const HistoryInitializer = React.memo(() => {
   const history = useHistory();
   useEffect(() => {
     history.push("/");
-  }, []);
+  }, [history]);
   return null;
 });
 
 const App = () => {
-  const [sorting, setSorting] = useState("last");
+  const [sorting, handleSortingChanged] = useState("last");
   const [search, setSearch] = useState("");
   const [menuOpen, setMenu] = useState(false);
   const container = React.useRef(null);
-  const closeMenu = useCallback(() => setMenu(false));
+  const closeMenu = useCallback(() => setMenu(false), [setMenu]);
   const [vertMenuAnchorEl, setVertMenuAnchorEl] = useState(null);
-  const handleVertMenuOpen = useCallback((event) => {
+  const handleVertMenuOpened = useCallback((event) => {
     setVertMenuAnchorEl(event.currentTarget);
-  });
+  }, [setVertMenuAnchorEl]);
   const handleCloseVertMenu = useCallback(() => {
     setVertMenuAnchorEl(null);
-  });
+  }, [setVertMenuAnchorEl]);
   const handleOpenMenu = useCallback(() => {
     setMenu(true);
-  });
+  }, [setMenu]);
   return (
     <BrowserRouter>
       <HistoryInitializer />
       <ResetScroll />
       <TopBar sorted={sorting}
-        changeSorting={setSorting}
+        onSortingChanged={handleSortingChanged}
         handleSearch={setSearch}
         actionButtonContainer={container}
-        handleVertMenuOpen={handleVertMenuOpen}
-        handleOpenMenu={handleOpenMenu}
+        onVertMenuOpened={handleVertMenuOpened}
+        onMenuOpened={handleOpenMenu}
       />
       <React.Suspense fallback={<FallbackProgressBar />}>
         <Main>
-          <Switch>
-            <Route path="/settings/:userId">
-              <UserSettings
-                menuOpen={menuOpen}
-                closeMenu={closeMenu}
-                container={container} />
-            </Route>
-            <Route path="/user/:userId">
-              <UserDetails
-                search={search}
-                vertMenuAnchorEl={vertMenuAnchorEl}
-                handleCloseVertMenu={handleCloseVertMenu} />
-            </Route>
-            <Route>
-              <UserList
-                search={search} sorting={sorting}
-                vertMenuAnchorEl={vertMenuAnchorEl}
-                handleCloseVertMenu={handleCloseVertMenu} />
-            </Route>
-          </Switch>
+          <Route path="/settings/:userId">
+            <UserSettings
+              menuOpen={menuOpen}
+              closeMenu={closeMenu}
+              container={container} />
+          </Route>
+          <Route path="/user/:userId">
+            <UserDetails
+              search={search}
+              vertMenuAnchorEl={vertMenuAnchorEl}
+              handleCloseVertMenu={handleCloseVertMenu} />
+          </Route>
+          <UserList
+            search={search} sorting={sorting}
+            vertMenuAnchorEl={vertMenuAnchorEl}
+            handleCloseVertMenu={handleCloseVertMenu} />
         </Main>
       </React.Suspense>
     </BrowserRouter>

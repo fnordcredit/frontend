@@ -17,14 +17,16 @@ const UserListVerticalMenu = React.memo<Props>(({ anchorEl, onClose }) => {
   const handleOpenDialog = useCallback(() => {
     onClose();
     setDialogOpen(true);
-  });
+  }, [onClose, setDialogOpen]);
   const [aboutOpen, setAboutOpen] = useState(false);
   const handleOpenAbout = useCallback(() => {
     onClose();
     setAboutOpen(true);
-  });
-  const handleCloseAbout = useCallback(() => setAboutOpen(false));
-  const handleCloseDialog = useCallback(() => setDialogOpen(false));
+  }, [onClose, setAboutOpen]);
+  const handleCloseAbout = useCallback(() => setAboutOpen(false),
+    [setAboutOpen]);
+  const handleCloseDialog = useCallback(() => setDialogOpen(false),
+    [setDialogOpen]);
   return (
     <React.Fragment>
       <BaseMenu
