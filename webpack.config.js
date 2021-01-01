@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const WebpackShellPlugin = require('webpack-shell-plugin');
+const WebpackShellPlugin = require('webpack-shell-plugin-next');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
@@ -26,13 +26,19 @@ module.exports = {
   module: {
     rules: [
       { test: /\.(woff2?|eot|ttf|svg|ico|mp3|png)$/, loader: "file-loader" },
-      { test: /\.css$/, loader: "style-loader!css-loader" },
+      { test: /\.css$/, use: [ "style-loader", "css-loader" ] },
       { test: /\.js(x)?$/, exclude: /node_modules/, loader: "babel-loader" }
     ]
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new WebpackShellPlugin({onBuildStart:preBuildScripts}),
+    new WebpackShellPlugin({
+      onBuildStart: {
+        scripts: preBuildScripts,
+        blocking: true,
+        parallel: false
+      }
+    }),
     new HtmlWebpackPlugin({
       title: 'Fnordcredit',
       favicon: 'src/data/favicon.ico',
