@@ -1,28 +1,32 @@
 // @flow
 import { useState, useEffect } from "react";
 import { useUsers } from "contexts/Users";
+import API from "API";
 
-const useUser = (userId: number) => {
+const useUser = (userId: ?number, pincode?: string) => {
   const users = useUsers();
   const findUser = () => (
     users.find(
-      (us) => us.id.toString() === userId.toString()
+      (us) => us.id.toString() === userId?.toString()
     )
   );
-  const [user, setUser] = useState(findUser() || {
+  const [fullyLoaded, setFullyLoaded] = useState(false);
+  const [user, setUser]: [User, ((User => User) | User) => void] = useState(findUser() || {
     credit: 0,
-    id: userId,
+    id: userId || -1,
     lastchanged: 0,
     name: "Loading...",
     avatar: null
   });
   useEffect(() => {
-    const u = findUser();
-    if (u != null && u !== user) {
-      setUser(u);
+    if (userId != null) {
+      API.getUser(userId, pincode).then(response => {
+        setUser(response.data);
+        setFullyLoaded(true);
+      });
     }
-  }, [users]);
-  return user;
+  }, [userId]);
+  return [user, setUser, fullyLoaded];
 };
 
 export default useUser;

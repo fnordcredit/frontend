@@ -83,8 +83,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const LoadedUserDetails = React.memo(({ userId }) => {
-  const user = useUser(userId);
+const LoadedUserDetails = React.memo(({ user }) => {
   const isIdle = useIdle(30e3);
   return (
     <React.Fragment>
@@ -105,7 +104,8 @@ const UserDetails = React.memo<Props>((props) => {
   const userDetailsMatch = useRouteMatch("/user/:userId");
   const setSnackbarMsg = useSnackbar();
   const classes = useStyles();
-  const uid = userDetailsMatch != null ? userDetailsMatch.params.userId : null;
+  const uid = userDetailsMatch?.params?.userId;
+  const [user, setUser, userFullyLoaded] = useUser(uid);
   const [audio, _audioState, audioControls] = useAudio({ src: `/${kaChing}` });
   const kaching = useCallback(() => {
     // reset back to 0 for when two transactions are too close after each other
@@ -118,12 +118,11 @@ const UserDetails = React.memo<Props>((props) => {
       handleError("Something went wrong. UserId is null.");
       return;
     }
-    const userId: number = uid;
     if (typeof ap === "number") {
       const am: number = ap;
-      API.addCredit(userId, am)
-        .then((_response) => {
-          //setUser(response.data);
+      API.addCredit(user.id, am)
+        .then((response) => {
+          setUser(response.data);
           kaching();
           setSnackbarMsg(am < 0
             ? `Successfully removed ${Cur.formatString(am)} from your Account`
@@ -131,21 +130,21 @@ const UserDetails = React.memo<Props>((props) => {
         }).catch(handleError);
     } else {
       const p: Product = ap;
-      API.buyProduct(userId, p)
-        .then((_response) => {
-          //setUser(response.data);
+      API.buyProduct(user.id, p)
+        .then((response) => {
+          setUser(response.data);
           kaching();
           setSnackbarMsg(`Successfully bought ${p.name} `
             + `for ${Cur.formatString(p.price)}`);
         }).catch(handleError);
     }
-  }, [uid, kaching, handleError, setSnackbarMsg]);
+  }, [uid, user, kaching, handleError, setSnackbarMsg]);
   const gridClass = uid == null ? classes.hidden : "";
   return (
     <Grid container justify="center" className={gridClass}>
       <Grid item xs={12} md={3} className={classes.aside}>
         { uid == null ? null : <React.Fragment>
-          <LoadedUserDetails userId={uid} />
+          <LoadedUserDetails user={user} />
           <VertMenu anchorEl={vertMenuAnchorEl}
             onClose={handleCloseVertMenu} uid={uid} />
         </React.Fragment>}

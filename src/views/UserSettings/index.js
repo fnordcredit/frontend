@@ -113,15 +113,15 @@ type Props = {
 
 const UserSettings = React.memo<Props>(({ menuOpen, closeMenu, container }) => {
   const { userId } = useParams();
-  const user = useUser(userId);
+  const [user, setUser, userFullyLoaded] = useUser(userId);
   const { handleSave, handleNameChange, handleGravatarChange, changed } =
     useSettingsState({
       name: user.name,
       changed: false
     });
   const handleSaveClick = useCallback(() => {
-    handleSave(user);
-  }, [handleSave, user]);
+    handleSave(user, setUser);
+  }, [handleSave, user, setUser]);
   const classes = useStyles();
   return (
     <React.Fragment>

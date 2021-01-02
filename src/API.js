@@ -26,8 +26,8 @@ export default {
   ),
   getAllUsers: <T> (): AxiosPromise<T> => axios.get("/users/all"),
   getAllProducts: <T> (): AxiosPromise<T> => axios.get("/products/all"),
-  getUser: <T> (user: User, pin?: string): AxiosPromise<T> => (
-    axios.get(`/user/${user.id}`,
+  getUser: <T> (userId: number, pin?: string): AxiosPromise<T> => (
+    axios.get(`/user/${userId}`,
       { headers: { "x-user-pincode": pin == null ? "null" : pin }})
   ),
   getTransactions: <T> (userId: number): AxiosPromise<T> => (

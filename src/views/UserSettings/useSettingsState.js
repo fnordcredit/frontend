@@ -48,9 +48,9 @@ const useSettingsState = (initialState: Settings) => {
     }
     return u2;
   };
-  const handleSave = (user: User) => {
-    handleSaveAsync(user).then((_u) => {
-      refreshUsers();
+  const handleSave = (user: User, setUser: (User) => void) => {
+    handleSaveAsync(user).then((u) => {
+      setUser(u);
       setState({ changed: false });
     }).catch(handleError);
   };
