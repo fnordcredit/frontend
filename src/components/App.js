@@ -48,6 +48,7 @@ const App = () => {
   const handleOpenMenu = useCallback(() => {
     setMenu(true);
   }, [setMenu]);
+  const [loading, setLoading] = useState(false);
   return (
     <BrowserRouter>
       <HistoryInitializer />
@@ -60,6 +61,7 @@ const App = () => {
         onMenuOpened={handleOpenMenu}
       />
       <React.Suspense fallback={<FallbackProgressBar />}>
+        { loading && <FallbackProgressBar /> }
         <Main>
           <Route path="/settings/:userId">
             <UserSettings
@@ -71,7 +73,8 @@ const App = () => {
             <UserDetails
               search={search}
               vertMenuAnchorEl={vertMenuAnchorEl}
-              handleCloseVertMenu={handleCloseVertMenu} />
+              handleCloseVertMenu={handleCloseVertMenu}
+              setLoading={setLoading} />
           </Route>
           <UserList
             search={search} sorting={sorting}

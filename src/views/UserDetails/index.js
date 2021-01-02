@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useContext, useMemo, useCallback } from "react";
+import React, { useState, useContext, useMemo, useCallback, useEffect } from "react";
 import { Redirect, useRouteMatch } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -96,28 +96,14 @@ const LoadedUserDetails = React.memo(({ user }) => {
 type Props = {
   vertMenuAnchorEl: Object,
   handleCloseVertMenu: () => void,
-  search: string
+  search: string,
+  setLoading: (boolean) => void
 };
 
-const UserDetails = React.memo<Props>((props) => {
-  const { vertMenuAnchorEl, handleCloseVertMenu, search } = props;
-  const userDetailsMatch = useRouteMatch("/user/:userId");
-  const setSnackbarMsg = useSnackbar();
-  const classes = useStyles();
-  const uid = userDetailsMatch?.params?.userId;
-  const [user, setUser, userFullyLoaded] = useUser(uid);
-  const [audio, _audioState, audioControls] = useAudio({ src: `/${kaChing}` });
-  const kaching = useCallback(() => {
-    // reset back to 0 for when two transactions are too close after each other
-    audioControls.seek(0);
-    audioControls.play();
-  }, [audioControls]);
+const useAddCredit = (user: User, setUser, kaching) => {
   const handleError = useErrorHandler();
+  const setSnackbarMsg = useSnackbar();
   const addCredit = useCallback((ap: Product | number) => () => {
-    if (uid == null) {
-      handleError("Something went wrong. UserId is null.");
-      return;
-    }
     if (typeof ap === "number") {
       const am: number = ap;
       API.addCredit(user.id, am)
@@ -138,22 +124,45 @@ const UserDetails = React.memo<Props>((props) => {
             + `for ${Cur.formatString(p.price)}`);
         }).catch(handleError);
     }
-  }, [uid, user, kaching, handleError, setSnackbarMsg]);
-  const gridClass = uid == null ? classes.hidden : "";
+  }, [user.id, setUser]);
+  return addCredit;
+}
+
+const UserDetails = React.memo(({ search, vertMenuAnchorEl, handleCloseVertMenu, user, setUser, userFullyLoaded }) => {
+  const classes = useStyles();
+  const [audio, _audioState, audioControls] = useAudio({ src: `/${kaChing}` });
+  const kaching = useCallback(() => {
+    // reset back to 0 for when two transactions are too close after each other
+    audioControls.seek(0);
+    audioControls.play();
+  }, [audioControls]);
+  const addCredit = useAddCredit(user, setUser, kaching);
+  const gridClass = userFullyLoaded ? "" : classes.hidden;
   return (
     <Grid container justify="center" className={gridClass}>
       <Grid item xs={12} md={3} className={classes.aside}>
-        { uid == null ? null : <React.Fragment>
+        { !userFullyLoaded ? null : <React.Fragment>
           <LoadedUserDetails user={user} />
           <VertMenu anchorEl={vertMenuAnchorEl}
-            onClose={handleCloseVertMenu} uid={uid} />
+            onClose={handleCloseVertMenu} uid={user.id} />
         </React.Fragment>}
       </Grid>
       <ChangeCreditPanels addCredit={addCredit}
-        search={uid == null ? "" : search} />
+        search={userFullyLoaded ? search : ""} />
       {audio}
     </Grid>
   );
 });
 
-export default UserDetails;
+const UserDetailsRoute = React.memo<Props>((props) => {
+  const userDetailsMatch = useRouteMatch("/user/:userId");
+  const uid = userDetailsMatch?.params?.userId;
+  const [user, setUser, userFullyLoaded] = useUser(uid);
+  useEffect(() => { props.setLoading(!userFullyLoaded); }, [userFullyLoaded]);
+  return <UserDetails search={props.search}
+    vertMenuAnchorEl={props.vertMenuAnchorEl}
+    handleCloseVertMenu={props.handleCloseVertMenu}
+    user={user} setUser={setUser} userFullyLoaded={userFullyLoaded} />;
+});
+
+export default UserDetailsRoute;
