@@ -26,21 +26,21 @@ export default {
   ),
   getAllUsers: <T> (): AxiosPromise<T> => axios.get("/users/all"),
   getAllProducts: <T> (): AxiosPromise<T> => axios.get("/products/all"),
-  getUser: <T> (userId: number, pin?: string): AxiosPromise<T> => (
+  getUser: <T> (userId: number, pin?: ?string): AxiosPromise<T> => (
     axios.get(`/user/${userId}`,
       { headers: { "x-user-pincode": pin == null ? "null" : pin }})
   ),
   getTransactions: <T> (userId: number): AxiosPromise<T> => (
     axios.get(`/transactions/${userId}`)
   ),
-  renameUser: <T> (user: User, name: string, pin?: string): AxiosPromise<T> => (
+  renameUser: <T> (user: User, name: string, pin?: ?string): AxiosPromise<T> => (
     axios.post("/user/rename", {
       id: user.id,
       newname: name
     }, { headers: { "x-user-pincode": pin == null ? "null" : pin }})
   ),
   changeGravatar: <T> (user: User, email: string,
-    pin?: string): AxiosPromise<T> => (
+    pin?: ?string): AxiosPromise<T> => (
     axios.post("/user/change-gravatar", {
       id: user.id,
       email: email

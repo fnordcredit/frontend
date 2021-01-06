@@ -15,6 +15,14 @@ type User = {
   avatar: ?string
 };
 
+type AuthorizedUser = User & {
+  pincode: ?string,
+  token: ?string,
+  email: ?string,
+  debtAllowed: boolean,
+  debtHardLimit: number
+};
+
 type Product = {
   id: number,
   name: string,

@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import React, { useState, useCallback } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -10,11 +10,20 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 type Props = {
   open: boolean,
-  onClose: () => void
+  onClose: () => void,
+  onLogin: (string) => void
 }
 
 const LoginDialog = React.memo<Props>((props: Props) => {
   const handleClose = props.onClose;
+  const [pin, setPin] = useState("");
+  const handleLogin = useCallback(() => props.onLogin(pin));
+  const handleInputChange = useCallback((event) => {
+    const newp = event?.target?.value;
+    if (newp != null) {
+      setPin(newp);
+    }
+  });
   return (
     <Dialog aria-labelledby="login-dialog-title" {...props}>
       <DialogTitle id="login-dialog-title">Pin Required</DialogTitle>
@@ -29,13 +38,15 @@ const LoginDialog = React.memo<Props>((props: Props) => {
           label="Pin"
           type="password"
           fullWidth
+          value={pin}
+          onChange={handleInputChange}
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>
           Cancel
         </Button>
-        <Button onClick={handleClose} color="secondary">
+        <Button onClick={handleLogin} color="secondary">
           Login
         </Button>
       </DialogActions>

@@ -1,6 +1,6 @@
 // @flow
 import React, { useState, useContext, useMemo, useCallback, useEffect } from "react";
-import { Redirect, useRouteMatch } from "react-router-dom";
+import { Redirect, useRouteMatch, useHistory } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { useIdle, useAudio } from "react-use";
@@ -12,6 +12,7 @@ import ChangeCreditPanel from "./ChangeCreditPanel";
 import * as Cur from "components/Currency";
 import BarcodeScanner from "components/BarcodeScanner";
 import VertMenu from "components/VerticalMenu/UserDetailsVerticalMenu";
+import LoginDialog from "components/LoginDialog";
 import ProductsContext from "contexts/Products";
 import useErrorHandler from "contexts/Error";
 import { useSnackbar } from "contexts/Snackbar";
@@ -156,13 +157,24 @@ const UserDetails = React.memo(({ search, vertMenuAnchorEl, handleCloseVertMenu,
 
 const UserDetailsRoute = React.memo<Props>((props) => {
   const userDetailsMatch = useRouteMatch("/user/:userId");
+  const [pincode, setPincode] = useState(null);
+  const history = useHistory();
+  const goBack = useCallback(() => {
+    props.setLoading(false);
+    history.goBack();
+  });
   const uid = userDetailsMatch?.params?.userId;
-  const [user, setUser, userFullyLoaded] = useUser(uid);
+  const [user, setUser, userFullyLoaded, loginRequired] = useUser(uid, pincode);
   useEffect(() => { props.setLoading(!userFullyLoaded); }, [userFullyLoaded]);
-  return <UserDetails search={props.search}
-    vertMenuAnchorEl={props.vertMenuAnchorEl}
-    handleCloseVertMenu={props.handleCloseVertMenu}
-    user={user} setUser={setUser} userFullyLoaded={userFullyLoaded} />;
+  return (
+    <React.Fragment>
+      <LoginDialog open={loginRequired} onClose={goBack} onLogin={setPincode} />
+      <UserDetails search={props.search}
+        vertMenuAnchorEl={props.vertMenuAnchorEl}
+        handleCloseVertMenu={props.handleCloseVertMenu}
+        user={user} setUser={setUser} userFullyLoaded={userFullyLoaded} />
+    </React.Fragment>
+  );
 });
 
 export default UserDetailsRoute;
